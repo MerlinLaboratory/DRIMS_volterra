@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(irim_ss_pkg)
+project(DRIMS_dice_demo)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES irim_ss_pkg
+#  LIBRARIES DRIMS_dice_demo
 #  CATKIN_DEPENDS cv_bridge moveit-commander rospy
 #  DEPENDS system_lib
 )

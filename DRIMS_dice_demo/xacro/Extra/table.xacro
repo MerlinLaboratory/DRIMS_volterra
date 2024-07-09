@@ -31,14 +31,14 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0.6"/>
                 <geometry>
-                    <mesh filename="package://irim_ss_pkg/meshes/Extra/table.obj" scale="1.5 1 0.05"/>
+                    <mesh filename="package://DRIMS_dice_demo/meshes/Extra/table.obj" scale="1.5 1 0.05"/>
                 </geometry>
                 <!-- <material name="Gazebo/Yellow"/> -->
             </visual>
             <collision>
                 <origin rpy="0 0 0" xyz="0 0 0.6"/>
                 <geometry>
-                    <mesh filename="package://irim_ss_pkg/meshes/Extra/table.obj" scale="1.5 1 0.05"/>
+                    <mesh filename="package://DRIMS_dice_demo/meshes/Extra/table.obj" scale="1.5 1 0.05"/>
                 </geometry>
                 <!-- <material name="Gazebo/Yellow"/> -->
             </collision>
@@ -51,7 +51,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="-0.65 -0.4 0.29"/>
                 <geometry>
-                    <mesh filename="package://irim_ss_pkg/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
+                    <mesh filename="package://DRIMS_dice_demo/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
                 </geometry>
                 <!-- <material name="white">
                     <color rgba="1 1 1 1"/>
@@ -60,7 +60,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="-0.65 0.4 0.29"/>
                 <geometry>
-                    <mesh filename="package://irim_ss_pkg/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
+                    <mesh filename="package://DRIMS_dice_demo/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
                 </geometry>
                 <!-- <material name="white">
                     <color rgba="1 1 1 1"/>
@@ -69,7 +69,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0.65 -0.4 0.29"/>
                 <geometry>
-                    <mesh filename="package://irim_ss_pkg/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
+                    <mesh filename="package://DRIMS_dice_demo/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
                 </geometry>
                 <!-- <material name="white">
                     <color rgba="1 1 1 1"/>
@@ -78,7 +78,7 @@
                 <visual>
                 <origin rpy="0 0 0" xyz="0.65 0.4 0.29"/>
                 <geometry>
-                    <mesh filename="package://irim_ss_pkg/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
+                    <mesh filename="package://DRIMS_dice_demo/meshes/Extra/table.obj" scale="0.1 0.1 0.58"/>
                 </geometry>
             </visual>
         </link>

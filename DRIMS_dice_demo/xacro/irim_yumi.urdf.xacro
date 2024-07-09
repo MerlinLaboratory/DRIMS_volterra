@@ -19,13 +19,13 @@
     <!-- Robot -->
 
     <!-- Import Rviz colors -->
-    <xacro:include filename="$(find robots_description)/Util/materials.xacro" />
+    <xacro:include filename="$(find omnicore_description)/Util/materials.xacro" />
 
     <!-- Import utilities -->
-    <xacro:include filename="$(find robots_description)/Util/utilities.xacro" />
+    <xacro:include filename="$(find omnicore_description)/Util/utilities.xacro" />
 
     <!-- Import the table -->
-    <xacro:include filename="$(find irim_ss_pkg)/xacro/Extra/table.xacro" />
+    <xacro:include filename="$(find DRIMS_dice_demo)/xacro/Extra/table.xacro" />
 
     <xacro:table parent="world" >
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -33,28 +33,28 @@
 
 
     <!-- Import the table -->
-    <xacro:include filename="$(find irim_ss_pkg)/xacro/Extra/camera_stand.xacro" />
+    <xacro:include filename="$(find DRIMS_dice_demo)/xacro/Extra/camera_stand.xacro" />
 
     <xacro:camera_stand parent="base_link_table" >
         <origin xyz="0.0 0.4 0.65" rpy="0 0 0" />
     </xacro:camera_stand>
 
     <!-- Import the surface -->
-    <xacro:include filename="$(find irim_ss_pkg)/xacro/Extra/surface.xacro" />
+    <xacro:include filename="$(find DRIMS_dice_demo)/xacro/Extra/surface.xacro" />
 
     <xacro:surface parent="single_yumi_base_link" >
         <origin xyz="-0.03 0.33 0.08" rpy="0 0 0" />
     </xacro:surface>
 
     <!--Import the single yumi macro -->
-    <xacro:include filename="$(find robots_description)/xacro/YumiSingleArm/single_yumi.xacro" />
+    <xacro:include filename="$(find omnicore_description)/xacro/YumiSingleArm/single_yumi.xacro" />
 
     <xacro:single_yumi parent="base_link_table" hardware_interface="${hardware_interface}">
         <origin xyz="-0.3 0 0.6" rpy="0 0 -1.57" />
     </xacro:single_yumi>
 
     <!--Import the yumi servo gripper macro -->
-    <xacro:include filename="$(find robots_description)/Grippers/YumiServoGripper/yumi_servo_gripper.xacro" />
+    <xacro:include filename="$(find omnicore_description)/Grippers/YumiServoGripper/yumi_servo_gripper.xacro" />
     <!-- Gripper -->
     <xacro:yumi_servo_gripper name="gripper" parent="link_7" hardware_interface="${gripper_interface}" fake_execution="'true'">
         <origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
