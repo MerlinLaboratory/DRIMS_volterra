@@ -24,7 +24,7 @@ np.set_printoptions(suppress=True)
 # time.sleep(15)
 
 rp = rospkg.RosPack()
-path = rp.get_path('DRIMS_dice_demo')
+path = rp.get_path('drims_dice_demo')
 
 urdf_file = path + '/xacro/Extra/dice.urdf'
 
