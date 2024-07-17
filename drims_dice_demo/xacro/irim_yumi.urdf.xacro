@@ -56,7 +56,7 @@
     <!--Import the yumi servo gripper macro -->
     <xacro:include filename="$(find omnicore_description)/Grippers/YumiServoGripper/yumi_servo_gripper.xacro" />
     <!-- Gripper -->
-    <xacro:yumi_servo_gripper name="gripper" parent="link_7" hardware_interface="${gripper_interface}" fake_execution="'true'">
+    <xacro:yumi_servo_gripper name="gripper" parent="link_7" hardware_interface="${gripper_interface}">
         <origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
     </xacro:yumi_servo_gripper>
 
