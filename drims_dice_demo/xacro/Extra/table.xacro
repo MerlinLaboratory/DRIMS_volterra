@@ -1,8 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="table" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-
-
     <xacro:macro name="table" params="parent *origin">
 
         <!-- <material name="yellow">

@@ -1,0 +1,111 @@
+<launch>
+  <arg name="robot" default="gofa" doc="Which robot to load? [gofa, yumi_single_arm]" />
+  <arg name="paused" default="false" />
+  <arg name="use_sim_time" default="true" />
+  <arg name="gui" default="true" />
+  <arg name="headless" default="false" />
+  <arg name="debug" default="false" />
+  <arg name="verbose" default="true" />
+  <arg name="load_gripper" default="true" />
+  <arg name="collision_scene" default="true" />
+  <arg name="pub_clock_frequency" default="500" />
+
+
+  <!--launch
+  GAZEBO with own world configuration -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="verbose" value="$(arg verbose)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="headless" value="$(arg headless)" />
+    <arg name="pub_clock_frequency" value="$(arg pub_clock_frequency)" />
+  </include>
+
+  <param name="robot_description"
+    command="$(find xacro)/xacro --inorder $(find drims_dice_demo)/xacro/robot_arm.urdf.xacro robot:=$(arg robot)" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="true" output="screen" />
+
+  <!-- LOAD CONTROLLERS YAML FILE -->
+  <group if="$(eval arg('robot') == 'yumi_single_arm')">
+    <arg name="controller_config_file"
+      default="$(find drims_dice_demo)/config/yumi_controllers.yaml" />
+    <arg name="controllers" default="joint_state_controller robot_controller gripper_controller" />
+    <!-- Load controller settings -->
+    <rosparam file="$(arg controller_config_file)" command="load" />
+    <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
+      args="$(arg controllers)" output="screen" respawn="false" />
+  </group>
+
+  <group if="$(eval arg('robot') == 'gofa')">
+    <arg name="controller_config_file"
+      default="$(find drims_dice_demo)/config/gofa_controllers.yaml" />
+    <arg name="controllers" default="joint_state_controller robot_controller" />
+    <!-- Load controller settings -->
+    <rosparam file="$(arg controller_config_file)" command="load" />
+    <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
+      args="$(arg controllers)" output="screen" respawn="false" />
+  </group>
+
+  <!-- Spawn robot -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+    args="-param robot_description -urdf -model $(arg robot) " />
+
+  <!-- MOVEIT -->
+  <arg name="fake_execution_type" default="interpolate" />
+  <arg name="pipeline" default="ompl" />
+  <arg name="load_robot_description" default="false" />
+  <arg name="use_rviz" default="true" />
+
+  <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers
+  configured by default) -->
+  <group if="$(eval arg('robot') == 'yumi_single_arm')">
+    <include file="$(find yumi_single_arm_moveit_config)/launch/move_group.launch">
+      <arg name="allow_trajectory_execution" value="true" />
+      <arg name="moveit_controller_manager" value="ros_control" />
+      <arg name="fake_execution_type" value="$(arg fake_execution_type)" />
+      <arg name="info" value="true" />
+      <arg name="debug" value="$(arg debug)" />
+      <arg name="pipeline" value="$(arg pipeline)" />
+      <arg name="load_robot_description" value="$(arg load_robot_description)" />
+    </include>
+
+    <!-- Run Rviz and load the default config to see the state of the move_group node -->
+    <include file="$(find yumi_single_arm_moveit_config)/launch/moveit_rviz.launch"
+      if="$(arg use_rviz)">
+      <arg name="rviz_config" value="$(find drims_dice_demo)/config/moveit.rviz" />
+      <arg name="debug" value="$(arg debug)" />
+    </include>
+  </group>
+
+  <group if="$(eval arg('robot') == 'gofa')">
+    <include file="$(find gofa_moveit_config)/launch/move_group.launch">
+      <arg name="allow_trajectory_execution" value="true" />
+      <arg name="moveit_controller_manager" value="ros_control" />
+      <arg name="fake_execution_type" value="$(arg fake_execution_type)" />
+      <arg name="info" value="true" />
+      <arg name="debug" value="$(arg debug)" />
+      <arg name="pipeline" value="$(arg pipeline)" />
+      <arg name="load_robot_description" value="$(arg load_robot_description)" />
+    </include>
+
+    <!-- Run Rviz and load the default config to see the state of the move_group node -->
+    <include file="$(find gofa_moveit_config)/launch/moveit_rviz.launch"
+      if="$(arg use_rviz)">
+      <arg name="rviz_config" value="$(find drims_dice_demo)/config/moveit.rviz" />
+      <arg name="debug" value="$(arg debug)" />
+    </include>
+  </group>
+  <!-- <node name="spawn_dice" pkg="gazebo_ros" type="spawn_model" args="-urdf -file $(find
+  robots_description)/xacro/Extra/dice.urdf -model dice -z 0.9 -R 1.0 -P 1.0 -Y 1.0 "
+  launch-prefix="bash -c 'sleep 20; $0 $@' " /> -->
+
+  <!-- Spawn dice -->
+  <node name="spawn_dice_py" pkg="drims_dice_demo" type="dice.py" output="screen" />
+
+  <node name="gripper_simulation" pkg="drims_dice_demo" type="gripper_simulation.py" />
+
+</launch>

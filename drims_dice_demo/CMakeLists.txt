@@ -18,6 +18,8 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_commander
 )
 
+find_package(omnicore_description REQUIRED)
+
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES drims_dice_demo

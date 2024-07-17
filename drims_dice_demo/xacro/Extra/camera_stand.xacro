@@ -1,8 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="camera_stand" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-
-
     <xacro:macro name="camera_stand" params="parent *origin">
 
         <xacro:property name="base_height" value="0.88" />
@@ -70,7 +68,7 @@
                 <geometry>
                     <box size="0.01 0.01 0.01"/>
                 </geometry>
-                <material name="red"/>
+                <material name="Red"/>
             </visual>
 
             <inertial>
