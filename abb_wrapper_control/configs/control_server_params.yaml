@@ -1,6 +1,4 @@
 abb:
- ## Move group name defined in the config file of the MoveIt! package
- group_name: arm 
  ## End-effector name defined in the config file of the MoveIt! package
  end_effector_name: grasp_link
 

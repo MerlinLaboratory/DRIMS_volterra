@@ -167,7 +167,7 @@ class dice_ros:
 
 
             try:
-                (trans_dice,rot_dice) = self.listener.lookupTransform('/single_yumi_base_link', '/dice', rospy.Time(0))
+                (trans_dice,rot_dice) = self.listener.lookupTransform('/yumi_single_arm_base_link', '/dice', rospy.Time(0))
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 continue
 
@@ -175,7 +175,7 @@ class dice_ros:
             # eul = euler_from_quaternion([rot_dice[0],rot_dice[1],rot_dice[2],rot_dice[3]],axes="sxyz")
             
 
-            self.msg_pose.header.frame_id  = "single_yumi_base_link"
+            self.msg_pose.header.frame_id  = "yumi_single_arm_base_link"
             self.msg_pose.header.stamp     = rospy.Time.now()
             self.msg_pose.pose.position.x    = trans_dice[0]
             self.msg_pose.pose.position.y    = trans_dice[1]
@@ -202,8 +202,6 @@ class dice_ros:
             self.pub_fake.publish(self.last_message)
 
             self.rate.sleep()
-
-
 
 
 def main():

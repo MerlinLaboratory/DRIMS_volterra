@@ -104,7 +104,7 @@
   launch-prefix="bash -c 'sleep 20; $0 $@' " /> -->
 
   <!-- Spawn dice -->
-  <node name="spawn_dice_py" pkg="drims_dice_demo" type="dice.py" output="screen" />
+  <!-- <node name="spawn_dice_py" pkg="drims_dice_demo" type="dice.py" output="screen" /> -->
 
   <node name="gripper_simulation" pkg="drims_dice_demo" type="gripper_simulation.py" />
 

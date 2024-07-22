@@ -10,6 +10,7 @@
 	<rosparam command="load" file="$(arg control_server_params)"/>
    
 	<!-- Load main node -->
-  <node name="control_server_node" pkg="abb_wrapper_control" type="control_server" args="$(arg planner)" output="screen"/>
-  
+  <node name="control_server_node" pkg="abb_wrapper_control" type="control_server" args="$(arg planner)" output="screen">
+     <param name="robot_type" type="string" value="yumi"/>
+  </node>
 </launch>

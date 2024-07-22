@@ -213,8 +213,12 @@ void SlerpPlan::computeWaypointsFromPoses(const Eigen::Affine3d& start_pose, con
 	Eigen::Quaterniond goal_quat(goal_pose.linear());
 	Eigen::Quaterniond diff_quat;
 
+    // distance between 2 quaternions
+    double dot_product = start_quat.dot(goal_quat);
+    double distance_quat = std::sqrt(1 - dot_product * dot_product);
+
     // Setting the number of wp according to diff_vec
-    this->real_n_wp = std::floor(diff_vec.norm() * this->n_wp);
+    this->real_n_wp = std::floor(std::max(diff_vec.norm(), distance_quat) * this->n_wp);
     if(DEBUG) ROS_INFO_STREAM("The norm of the diff_vec is " << diff_vec.norm() << 
         ", so the new number of waypoints is " << this->real_n_wp << ".");
 

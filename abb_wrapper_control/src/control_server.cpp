@@ -19,7 +19,11 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "abb_control_server");
 
-    ros::NodeHandle nh_;
+    ros::NodeHandle nh_("~");
+    std::string robot_type;
+    nh_.param<std::string>("robot_type", robot_type, "");
+
+    ROS_INFO("The arm you want to use is: %s", robot_type.c_str());
  
     // Get the params from the loaded YAML file
 
@@ -32,12 +36,17 @@ int main(int argc, char **argv)
     std::string joint_plan_service_name;
     bool choice_planner;
     
-    //Move group name
-
-	if(!nh_.getParam("/abb/group_name", group_name)){
-        ROS_ERROR("Failed to load the move group name!");
-    };
-
+    // Set the move group name based on the robot
+    if(robot_type == "gofa"){
+        ROS_INFO("Set the group name for the gofa arm");
+        group_name = "arm";
+    }else if (robot_type == "yumi"){
+        ROS_INFO("Set the group name for the yumi arm");
+        group_name = "arm";
+    }else{
+        ROS_ERROR("Did you choose between gofa and yumi?");
+        return 0;
+    }
     ROS_INFO("The move group name is: %s", group_name.c_str());
  
     //End-effector name use for planning
@@ -82,58 +91,59 @@ int main(int argc, char **argv)
 
 	/*------------------ Arm Control --------------------*/
 
-    ROS_INFO("Creating the arm client pointer");
-    std::string arm_jt_topic = "/robot_controller/follow_joint_trajectory/";
-    boost::shared_ptr<actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>> arm_client_ptr_(new actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>(arm_jt_topic, true));
+    // ROS_INFO("Creating the arm client pointer");
+    // std::string arm_jt_topic = "/robot_controller/follow_joint_trajectory/";
+    // boost::shared_ptr<actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>> arm_client_ptr_(new actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>(arm_jt_topic, true));
     
-    ROS_INFO("Creating the arm control object");
-    ArmControl arm_control_obj(nh_, arm_client_ptr_);
+    // ROS_INFO("Creating the arm control object");
+    // ArmControl arm_control_obj(nh_, arm_client_ptr_);
 
-    /*-------------------------------------------------------*/
+    // /*-------------------------------------------------------*/
 
 
-    /*------------------- Pose Plan ------------------------*/
+    // /*------------------- Pose Plan ------------------------*/
 
     ROS_INFO("Creating the pose plan object");
-    PosePlan pose_plan_obj(nh_, group_name, end_effector_name);
+    PosePlan pose_plan_obj(nh_, robot_type, group_name, end_effector_name);
 
-    /*-------------------------------------------------------*/
-
-    
-    /*------------------- Slerp Plan -------------------------*/
-
-    ROS_INFO("Creating the slerp plan object");
-    SlerpPlan slerp_plan_obj(nh_, group_name, end_effector_name, 60);
-
-    /*-------------------------------------------------------*/
+    // /*-------------------------------------------------------*/
 
     
-    /*-------------------- Joint Plan ------------------------*/
+    // /*------------------- Slerp Plan -------------------------*/
 
-    ROS_INFO("Creating the joint plan object");
-    JointPlan joint_plan_obj(nh_, group_name);
+    // ROS_INFO("Creating the slerp plan object");
+    // SlerpPlan slerp_plan_obj(nh_, group_name, end_effector_name, 60);
 
-    /*-------------------------------------------------------*/
+    // /*-------------------------------------------------------*/
 
-    ROS_INFO("Advertising the services");
+    
+    // /*-------------------- Joint Plan ------------------------*/
 
-    //
-    ros::ServiceServer pose_service = nh_.advertiseService(pose_plan_service_name, &PosePlan::call_pose_plan, &pose_plan_obj);
-    ros::ServiceServer slerp_service = nh_.advertiseService(slerp_plan_service_name, &SlerpPlan::call_slerp_plan, &slerp_plan_obj);
-    ros::ServiceServer arm_service = nh_.advertiseService(arm_control_service_name, &ArmControl::call_arm_control, &arm_control_obj);
-    ros::ServiceServer arm_wait_service = nh_.advertiseService(arm_wait_service_name, &ArmControl::call_arm_wait, &arm_control_obj);
-    ros::ServiceServer joint_service = nh_.advertiseService(joint_plan_service_name, &JointPlan::call_joint_plan, &joint_plan_obj);
+    // ROS_INFO("Creating the joint plan object");
+    // JointPlan joint_plan_obj(nh_, group_name);
+
+    // /*-------------------------------------------------------*/
+
+    // ROS_INFO("Advertising the services");
+
+    // //
+    // ros::ServiceServer pose_service = nh_.advertiseService(pose_plan_service_name, &PosePlan::call_pose_plan, &pose_plan_obj);
+    // ros::ServiceServer slerp_service = nh_.advertiseService(slerp_plan_service_name, &SlerpPlan::call_slerp_plan, &slerp_plan_obj);
+    // ros::ServiceServer arm_service = nh_.advertiseService(arm_control_service_name, &ArmControl::call_arm_control, &arm_control_obj);
+    // ros::ServiceServer arm_wait_service = nh_.advertiseService(arm_wait_service_name, &ArmControl::call_arm_wait, &arm_control_obj);
+    // ros::ServiceServer joint_service = nh_.advertiseService(joint_plan_service_name, &JointPlan::call_joint_plan, &joint_plan_obj);
 
     ROS_INFO("The main service server is running. Running as fast as possible!");
 
     // ROS Async spinner (necessary for processing callbacks inside the service callbacks)
     ros::AsyncSpinner spinner(2);
     spinner.start();
-    ros::Rate r(125);
+    ros::waitForShutdown();
+    // ros::Rate r(125);
 
-    while(ros::ok()){
-        r.sleep();
-    }
+    // while(ros::ok()){
+    //     r.sleep();
+    // }
 
     spinner.stop();
 
