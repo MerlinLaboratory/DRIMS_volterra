@@ -39,14 +39,15 @@ int main(int argc, char **argv)
     // Set the move group name based on the robot
     if(robot == "gofa"){
         ROS_INFO("Set the group name for the gofa arm");
-        group_name = "arm";
+        group_name = "gofa_arm";
     }else if (robot == "yumi"){
         ROS_INFO("Set the group name for the yumi arm");
-        group_name = "arm";
+        group_name = "yumi_arm";
     }else{
         ROS_ERROR("Did you choose between gofa and yumi?");
         return 0;
     }
+    
     ROS_INFO("The move group name is: %s", group_name.c_str());
  
     //End-effector name use for planning
@@ -127,7 +128,7 @@ int main(int argc, char **argv)
     // ROS_INFO("Advertising the services");
 
     // //
-    // ros::ServiceServer pose_service = nh_.advertiseService(pose_plan_service_name, &PosePlan::call_pose_plan, &pose_plan_obj);
+    ros::ServiceServer pose_service = nh_.advertiseService(pose_plan_service_name, &PosePlan::call_pose_plan, &pose_plan_obj);
     // ros::ServiceServer slerp_service = nh_.advertiseService(slerp_plan_service_name, &SlerpPlan::call_slerp_plan, &slerp_plan_obj);
     // ros::ServiceServer arm_service = nh_.advertiseService(arm_control_service_name, &ArmControl::call_arm_control, &arm_control_obj);
     // ros::ServiceServer arm_wait_service = nh_.advertiseService(arm_wait_service_name, &ArmControl::call_arm_wait, &arm_control_obj);

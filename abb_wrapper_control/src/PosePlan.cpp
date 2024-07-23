@@ -11,7 +11,7 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefano.angeli@ing.uni
 
 #include <moveit_visual_tools/moveit_visual_tools.h>
 
-PosePlan::PosePlan(ros::NodeHandle& nh_, std::string base_link_, std::string group_name_, std::string end_effector_name_){
+PosePlan::PosePlan(ros::NodeHandle& nh_, std::string robot_, std::string group_name_, std::string end_effector_name_){
     
         ROS_INFO("Starting to create PosePlan object");
 
@@ -19,7 +19,7 @@ PosePlan::PosePlan(ros::NodeHandle& nh_, std::string base_link_, std::string gro
         this->nh = nh_;
          
         // Initializing names
-        this->base_link = base_link_;
+        this->robot = robot_;
         this->end_effector_name = end_effector_name_;
         this->group_name = group_name_;
 
@@ -59,8 +59,8 @@ bool PosePlan::initialize(geometry_msgs::Pose goal_pose, geometry_msgs::Pose sta
     
     // Getting the current ee transform
     try {
-		this->tf_listener.waitForTransform(this->base_link + "_base_link", this->end_effector_name, ros::Time(0), ros::Duration(10.0) );
-		this->tf_listener.lookupTransform(this->base_link + "_base_link", this->end_effector_name, ros::Time(0), this->stamp_ee_transform);
+		this->tf_listener.waitForTransform(this->robot + "_base_link", this->end_effector_name, ros::Time(0), ros::Duration(10.0) );
+		this->tf_listener.lookupTransform(this->robot + "_base_link", this->end_effector_name, ros::Time(0), this->stamp_ee_transform);
     } catch (tf::TransformException ex){
       	ROS_ERROR("%s", ex.what());
       	ros::Duration(1.0).sleep();
@@ -110,7 +110,7 @@ bool PosePlan::performMotionPlan(){
     
     // Move group interface
     moveit::planning_interface::MoveGroupInterface group(this->group_name);
-    group.setPoseReferenceFrame("single_yumi_base_link");
+    group.setPoseReferenceFrame(this->robot + "_base_link");
 
     //
   
@@ -127,7 +127,7 @@ bool PosePlan::performMotionPlan(){
     #ifdef VISUAL
 
     // Visual tools
-    moveit_visual_tools::MoveItVisualTools visual_tools("single_yumi_base_link");
+    moveit_visual_tools::MoveItVisualTools visual_tools(this->robot + "_base_link");
     visual_tools.deleteAllMarkers();
 
     // Loading the remote control for visual tools and promting a message
@@ -156,62 +156,6 @@ bool PosePlan::performMotionPlan(){
         group.setStartState(start_state);
     }
     
-    #ifdef CONSTRAINTS
-    
-    // Get the joint values (positions) from the RobotState
-    std::vector<double> joint_values;
-    start_state.copyJointGroupPositions(joint_model_group, joint_values);
-    
-    //  // Define joint names for the constraints (replace with your actual joint names)
-    // std::vector<std::string> joint_names = {"joint_1", "joint_5"};
-
-    // // Define desired positions and tolerance values for each joint
-    // std::map<std::string, double> desired_positions = {
-    //     {"joint_1", joint_values[0]}, // Replace with desired positions for each joint
-    //     {"joint_5", joint_values[4]} 
-    // };
-
-    // std::map<std::string, double> tolerance_above = {
-    //     {"joint_1", 2.1}, // Replace with desired tolerance values for each joint
-    //     {"joint_5", 2.1}  // Replace with desired tolerance values for each joint
-    // };
-
-    // std::map<std::string, double> tolerance_below = {
-    //     {"joint_1", 2.1}, // Replace with desired tolerance values for each joint
-    //     {"joint_5", 2.1}  // Replace with desired tolerance values for each joint
-    // };
-
-    // std::map<std::string, double> weight = {
-    //     {"joint_1", 0.5}, // Replace with desired tolerance values for each joint
-    //     {"joint_5", 1.0}  
-    // };
-
-    // // Create Constraints message
-    // moveit_msgs::Constraints joint_constraints;
-
-    // // Set up joint constraints for each joint
-    // for (const std::string& joint_name : joint_names)
-    // {
-    //     moveit_msgs::JointConstraint joint_constraint;
-        
-    //     // Set the joint name
-    //     joint_constraint.joint_name = joint_name;
-        
-    //     // Set the desired position, tolerance_above, and tolerance_below for the joint
-    //     joint_constraint.position = desired_positions[joint_name];
-    //     joint_constraint.tolerance_above = tolerance_above[joint_name];
-    //     joint_constraint.tolerance_below = tolerance_below[joint_name];
-    //     joint_constraint.weight = weight[joint_name];
-        
-    //     // Add the joint constraint to the list
-    //     joint_constraints.joint_constraints.push_back(joint_constraint);
-    // }
-
-    // Set path constraints
-    // group.setPathConstraints(joint_constraints);
-
-    #endif
-
     // Planning to Pose
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
     bool success = (group.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);

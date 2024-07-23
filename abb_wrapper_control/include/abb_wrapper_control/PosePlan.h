@@ -48,7 +48,7 @@ class PosePlan {
         // Important names
         std::string end_effector_name;                          // Name of the end-effector link
         std::string group_name;                                 // Name of the MoveIt group
-        std::string base_link;                                  // Name of the base link of the robot arm
+        std::string robot;                                  // Name of the base link of the robot arm
 
         // Tf listener and transform and the tmp eigen
 	    tf::TransformListener tf_listener;
