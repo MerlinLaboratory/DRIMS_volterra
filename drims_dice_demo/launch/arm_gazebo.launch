@@ -1,5 +1,5 @@
 <launch>
-  <arg name="robot" default="gofa" doc="Which robot to load? [gofa, yumi_single_arm]" />
+  <arg name="robot" default="gofa" doc="Which robot to load? [gofa, yumi]" />
   <arg name="paused" default="false" />
   <arg name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
@@ -9,7 +9,6 @@
   <arg name="load_gripper" default="true" />
   <arg name="collision_scene" default="true" />
   <arg name="pub_clock_frequency" default="500" />
-
 
   <!--launch
   GAZEBO with own world configuration -->
@@ -30,7 +29,7 @@
     respawn="true" output="screen" />
 
   <!-- LOAD CONTROLLERS YAML FILE -->
-  <group if="$(eval arg('robot') == 'yumi_single_arm')">
+  <group if="$(eval arg('robot') == 'yumi')">
     <arg name="controller_config_file"
       default="$(find drims_dice_demo)/config/yumi_controllers.yaml" />
     <arg name="controllers" default="joint_state_controller robot_controller gripper_controller" />
@@ -38,6 +37,9 @@
     <rosparam file="$(arg controller_config_file)" command="load" />
     <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
       args="$(arg controllers)" output="screen" respawn="false" />
+    
+    <!-- Load Smart Gripper (grip_in for closing, grip_out for opening) -->
+    <node name="gripper_simulation" pkg="drims_dice_demo" type="gripper_simulation.py" />
   </group>
 
   <group if="$(eval arg('robot') == 'gofa')">
@@ -62,7 +64,7 @@
 
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers
   configured by default) -->
-  <group if="$(eval arg('robot') == 'yumi_single_arm')">
+  <group if="$(eval arg('robot') == 'yumi')">
     <include file="$(find yumi_single_arm_moveit_config)/launch/move_group.launch">
       <arg name="allow_trajectory_execution" value="true" />
       <arg name="moveit_controller_manager" value="ros_control" />
@@ -99,13 +101,12 @@
       <arg name="debug" value="$(arg debug)" />
     </include>
   </group>
+
   <!-- <node name="spawn_dice" pkg="gazebo_ros" type="spawn_model" args="-urdf -file $(find
   robots_description)/xacro/Extra/dice.urdf -model dice -z 0.9 -R 1.0 -P 1.0 -Y 1.0 "
   launch-prefix="bash -c 'sleep 20; $0 $@' " /> -->
 
   <!-- Spawn dice -->
   <!-- <node name="spawn_dice_py" pkg="drims_dice_demo" type="dice.py" output="screen" /> -->
-
-  <node name="gripper_simulation" pkg="drims_dice_demo" type="gripper_simulation.py" />
 
 </launch>

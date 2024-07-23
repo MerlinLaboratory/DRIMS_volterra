@@ -50,7 +50,7 @@
     </xacro:surface>
 
     <!-- Choose between gofa and yumi_single_arm -->
-    <xacro:if value="${robot == 'yumi_single_arm'}">
+    <xacro:if value="${robot == 'yumi'}">
         <xacro:single_yumi parent="base_link_table" child="${robot}_base_link"
             hardware_interface="${hardware_interface}">
             <origin xyz="-0.3 0 0.6" rpy="0 0 -1.57" />
