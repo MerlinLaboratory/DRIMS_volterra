@@ -11,7 +11,7 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefano.angeli@ing.uni
 
 #include <moveit_visual_tools/moveit_visual_tools.h>
 
-JointPlan::JointPlan(ros::NodeHandle& nh_, std::string group_name_){
+JointPlan::JointPlan(ros::NodeHandle& nh_, std::string robot_, std::string group_name_, std::string end_effector_name_){
         
         ROS_INFO("Starting to create JointPlan object");
 
@@ -19,6 +19,8 @@ JointPlan::JointPlan(ros::NodeHandle& nh_, std::string group_name_){
         this->nh = nh_;
 
         // Initializing names
+        this->robot = robot_;
+        this->end_effector_name = end_effector_name_;
         this->group_name = group_name_;
 
         ROS_INFO("Finished creating JointPlan object");
@@ -97,7 +99,8 @@ bool JointPlan::performMotionPlan(){
     #ifdef VISUAL
 
     // Visual tools
-    moveit_visual_tools::MoveItVisualTools visual_tools("world");
+    namespace rvt = rviz_visual_tools;
+    moveit_visual_tools::MoveItVisualTools visual_tools(this->robot + "_base_link");
     visual_tools.deleteAllMarkers();
 
     // Loading the remote control for visual tools and promting a message
@@ -138,17 +141,17 @@ bool JointPlan::performMotionPlan(){
 	if(!success) return false;
     
     /* If VISUAL is enabled */
-    // #ifdef VISUAL
+    #ifdef VISUAL
 
-    // ROS_INFO("Visualizing the computed plan as trajectory line.");
-    // visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
-    // visual_tools.trigger();
+    ROS_INFO("Visualizing the computed plan as trajectory line.");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group->getLinkModel(this->end_effector_name), joint_model_group, rvt::LIME_GREEN);
+    visual_tools.trigger();
     
     #ifdef PROMPT
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to execute the motion on the robot.");
     #endif
 
-    // #endif
+    #endif
 
     // Saving the computed trajectory and returning true
     this->computed_trajectory = my_plan.trajectory_.joint_trajectory;

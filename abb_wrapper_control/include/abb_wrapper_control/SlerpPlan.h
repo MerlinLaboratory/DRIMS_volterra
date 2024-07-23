@@ -31,7 +31,7 @@ class SlerpPlan {
 
     /// public variables and functions ------------------------------------------------------------
 	public:
-		SlerpPlan(ros::NodeHandle& nh_, std::string group_name_, std::string end_effector_name_, int n_wp_);
+		SlerpPlan(ros::NodeHandle& nh_, std::string robot_, std::string group_name_, std::string end_effector_name_, int n_wp_);
 
         ~SlerpPlan();
 
@@ -55,6 +55,7 @@ class SlerpPlan {
         // Important names
         std::string end_effector_name;                          // Name of the end-effector link
         std::string group_name;                                 // Name of the MoveIt group
+        std::string robot;
 
         // Number of waypoints for slerp interpolation
         int n_wp;                                               // Number of wp to be used for a translation of 1 meter

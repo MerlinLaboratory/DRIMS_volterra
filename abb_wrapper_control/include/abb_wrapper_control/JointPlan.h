@@ -27,7 +27,7 @@ class JointPlan {
 
     /// public variables and functions ------------------------------------------------------------
 	public:
-		JointPlan(ros::NodeHandle& nh_, std::string group_name_);
+		JointPlan(ros::NodeHandle& nh_, std::string robot_, std::string group_name_, std::string end_effector_name_);
 
         ~JointPlan();
 
@@ -47,8 +47,10 @@ class JointPlan {
 
         // Important names and values
         std::string group_name;                                 // Name of the MoveIt group
-
-        // The present joint config and the goal joint config
+        std::string end_effector_name;
+		std::string robot;
+        
+		// The present joint config and the goal joint config
 		std::vector<double> joint_now;							// The current joint config
 	  	bool flag_state;							// The goal joint config given by service call
         std::vector<double> joint_goal;

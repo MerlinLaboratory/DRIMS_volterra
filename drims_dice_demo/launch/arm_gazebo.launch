@@ -38,7 +38,7 @@
     <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
       args="$(arg controllers)" output="screen" respawn="false" />
     
-    <!-- Load Smart Gripper (grip_in for closing, grip_out for opening) -->
+    <!-- Load YuMi gripper (grip_in for closing, grip_out for opening) -->
     <node name="gripper_simulation" pkg="drims_dice_demo" type="gripper_simulation.py" />
   </group>
 

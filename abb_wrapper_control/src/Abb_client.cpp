@@ -65,26 +65,26 @@ bool AbbClient::initialize(ros::NodeHandle& nh_){
 
     // Initializing service clients after waiting
 
-    if(!ros::service::waitForService(this->arm_control_service_name, ros::Duration(1.0))) return false;
-    this->arm_control_client = this->nh.serviceClient<abb_wrapper_msgs::arm_control>(this->arm_control_service_name);
+    if(!ros::service::waitForService("/" + this->arm_control_service_name, ros::Duration(1.0))) return false;
+    this->arm_control_client = this->nh.serviceClient<abb_wrapper_msgs::arm_control>("/" + this->arm_control_service_name);
 
-    if(!ros::service::waitForService(this->arm_wait_service_name, ros::Duration(1.0))) return false;
-    this->arm_wait_client = this->nh.serviceClient<abb_wrapper_msgs::arm_wait>(this->arm_wait_service_name);
+    if(!ros::service::waitForService("/" + this->arm_wait_service_name, ros::Duration(1.0))) return false;
+    this->arm_wait_client = this->nh.serviceClient<abb_wrapper_msgs::arm_wait>("/" + this->arm_wait_service_name);
    
-    if(!ros::service::waitForService(this->pose_service_name, ros::Duration(1.0))) return false;
-    this->pose_client = this->nh.serviceClient<abb_wrapper_msgs::pose_plan>(this->pose_service_name);
+    if(!ros::service::waitForService("/" + this->pose_service_name, ros::Duration(1.0))) return false;
+    this->pose_client = this->nh.serviceClient<abb_wrapper_msgs::pose_plan>("/" + this->pose_service_name);
     
-    if(!ros::service::waitForService(this->slerp_service_name, ros::Duration(1.0))) return false;
-    this->slerp_client = this->nh.serviceClient<abb_wrapper_msgs::slerp_plan>(this->slerp_service_name);
+    if(!ros::service::waitForService("/" + this->slerp_service_name, ros::Duration(1.0))) return false;
+    this->slerp_client = this->nh.serviceClient<abb_wrapper_msgs::slerp_plan>("/" + this->slerp_service_name);
 
-    if(!ros::service::waitForService(this->joint_service_name, ros::Duration(1.0))) return false;
-    this->joint_client = this->nh.serviceClient<abb_wrapper_msgs::joint_plan>(this->joint_service_name);
+    if(!ros::service::waitForService("/" + this->joint_service_name, ros::Duration(1.0))) return false;
+    this->joint_client = this->nh.serviceClient<abb_wrapper_msgs::joint_plan>("/" + this->joint_service_name);
     
-    if(!ros::service::waitForService(this->gripper_service_grip_in, ros::Duration(1.0))) return false;
-    this->grip_in_client = this->nh.serviceClient<std_srvs::Trigger>(this->gripper_service_grip_in);
+    if(!ros::service::waitForService("/" + this->gripper_service_grip_in, ros::Duration(1.0))) return false;
+    this->grip_in_client = this->nh.serviceClient<std_srvs::Trigger>("/" + this->gripper_service_grip_in);
     
-    if(!ros::service::waitForService(this->gripper_service_grip_out, ros::Duration(1.0))) return false;
-    this->grip_out_client = this->nh.serviceClient<std_srvs::Trigger>(this->gripper_service_grip_out);
+    if(!ros::service::waitForService("/" + this->gripper_service_grip_out, ros::Duration(1.0))) return false;
+    this->grip_out_client = this->nh.serviceClient<std_srvs::Trigger>("/" + this->gripper_service_grip_out);
     
     // At this point initializing completed
     return true;

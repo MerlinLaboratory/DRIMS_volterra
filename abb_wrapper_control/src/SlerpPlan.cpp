@@ -11,7 +11,7 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefano.angeli@ing.uni
 
 #include <moveit_visual_tools/moveit_visual_tools.h>
 
-SlerpPlan::SlerpPlan(ros::NodeHandle& nh_, std::string group_name_, std::string end_effector_name_,  int n_wp_){
+SlerpPlan::SlerpPlan(ros::NodeHandle& nh_,  std::string robot_, std::string group_name_, std::string end_effector_name_,  int n_wp_){
         
         ROS_INFO("Starting to create SlerpPlan object");
 
@@ -19,6 +19,7 @@ SlerpPlan::SlerpPlan(ros::NodeHandle& nh_, std::string group_name_, std::string 
         this->nh = nh_;
 
         // Initializing names
+        this->robot = robot_;
         this->end_effector_name = end_effector_name_;
         this->group_name = group_name_;
 
@@ -62,8 +63,8 @@ bool SlerpPlan::initialize(geometry_msgs::Pose goal_pose, geometry_msgs::Pose st
 
     // Getting the current ee transform
     try {
-		this->tf_listener.waitForTransform("/single_yumi_base_link", this->end_effector_name, ros::Time(0), ros::Duration(10.0) );
-		this->tf_listener.lookupTransform("/single_yumi_base_link", this->end_effector_name, ros::Time(0), this->stamp_ee_transform);
+		this->tf_listener.waitForTransform(this->robot + "_base_link", this->end_effector_name, ros::Time(0), ros::Duration(10.0) );
+		this->tf_listener.lookupTransform(this->robot + "_base_link", this->end_effector_name, ros::Time(0), this->stamp_ee_transform);
     } catch (tf::TransformException ex){
       	ROS_ERROR("%s", ex.what());
       	ros::Duration(1.0).sleep();
@@ -121,7 +122,7 @@ bool SlerpPlan::performMotionPlan(){
     const robot_state::JointModelGroup* joint_model_group = group.getCurrentState()->getJointModelGroup(this->group_name);
 
     // Visual tools
-    moveit_visual_tools::MoveItVisualTools visual_tools("single_yumi_base_link");
+    moveit_visual_tools::MoveItVisualTools visual_tools(this->robot + "_base_link");
     visual_tools.deleteAllMarkers();
 
     // Loading the remote control for visual tools and promting a message
@@ -132,7 +133,7 @@ bool SlerpPlan::performMotionPlan(){
 
     // Set the desired planning frame
 
-    std::string new_planning_frame = "single_yumi_base_link";
+    std::string new_planning_frame = this->robot + "_base_link";
     group.setPoseReferenceFrame(new_planning_frame);
 
 	// Printing the planning group frame and the group ee frame
@@ -218,7 +219,8 @@ void SlerpPlan::computeWaypointsFromPoses(const Eigen::Affine3d& start_pose, con
     double distance_quat = std::sqrt(1 - dot_product * dot_product);
 
     // Setting the number of wp according to diff_vec
-    this->real_n_wp = std::floor(std::max(diff_vec.norm(), distance_quat) * this->n_wp);
+    std::cout << "this->n_wp is: " << this->n_wp << std::endl;
+    this->real_n_wp = std::ceil(diff_vec.norm() * this->n_wp);
     if(DEBUG) ROS_INFO_STREAM("The norm of the diff_vec is " << diff_vec.norm() << 
         ", so the new number of waypoints is " << this->real_n_wp << ".");
 
