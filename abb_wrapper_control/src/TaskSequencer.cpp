@@ -181,18 +181,18 @@ bool TaskSequencer::call_example_task(std_srvs::SetBool::Request &req, std_srvs:
     // Plan and go to Grasp Pose
     this->PlanAndExecuteSlerp(grasp_pose, false);
 
-    // // Close the gripper
+    // Close the gripper
 
-    // this->CloseGripper(true);
-    // sleep(0.2);
+    this->CloseGripper(true);
+    sleep(0.2);
 
-    // // Plan and go to Pre Grasp Pose
+    // Plan and go to Pre Grasp Pose
 
-    // this->PlanAndExecuteSlerp(pre_grasp_pose, false);
+    this->PlanAndExecuteSlerp(pre_grasp_pose, false);
 
     // // Plan and go to Joint Position A
 
-    // this->PlanAndExecuteJoint(joint_pos_A, true);
+    this->PlanAndExecuteJoint(joint_pos_A, true);
 
     // Now, everything finished well
     res.success = true;

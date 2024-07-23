@@ -150,6 +150,7 @@ bool PosePlan::performMotionPlan()
     // Visual tools
     namespace rvt = rviz_visual_tools;
     moveit_visual_tools::MoveItVisualTools visual_tools("world");
+    visual_tools.deleteAllMarkers();
 #endif
 
     // Printing the planning group frame and the group ee frame

@@ -50,48 +50,12 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Filter (blacklist): ""
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base_link_camera_stand:
-          Value: false
-        base_link_surface:
-          Value: false
-        base_link_table:
-          Value: false
-        camera_holder:
-          Value: false
-        ext_camera_link:
-          Value: false
-        grasp_link:
-          Value: true
-        gripper_base:
-          Value: false
-        gripper_finger_l:
-          Value: false
-        gripper_finger_r:
-          Value: false
-        link_1:
-          Value: false
-        link_2:
-          Value: false
-        link_3:
-          Value: false
-        link_4:
-          Value: false
-        link_5:
-          Value: false
-        link_6:
-          Value: false
-        link_7:
-          Value: false
-        world:
-          Value: false
-        yumi_base_link:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -99,31 +63,9 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        world:
-          base_link_table:
-            base_link_camera_stand:
-              camera_holder:
-                ext_camera_link:
-                  {}
-            yumi_base_link:
-              base_link_surface:
-                {}
-              link_1:
-                link_2:
-                  link_3:
-                    link_4:
-                      link_5:
-                        link_6:
-                          link_7:
-                            gripper_base:
-                              grasp_link:
-                                {}
-                              gripper_finger_l:
-                                {}
-                              gripper_finger_r:
-                                {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Class: moveit_rviz_plugin/PlanningScene
       Enabled: false
       Move Group Namespace: ""
@@ -517,7 +459,10 @@ Visualization Manager:
       Marker Topic: /rviz_visual_tools
       Name: MarkerArray
       Namespaces:
-        {}
+        Path: true
+        Sphere: true
+        Text: true
+        goal pose: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -536,7 +481,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.9750592708587646
+      Distance: 2.7088916301727295
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -544,17 +489,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.75
       Focal Point:
-        X: 0.25098717212677
-        Y: 0.2242356687784195
-        Z: 0.4451749622821808
+        X: -0.2322964370250702
+        Y: 0.14269785583019257
+        Z: 1.0123778581619263
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4499998986721039
+      Pitch: 0.12499988079071045
       Target Frame: world
-      Yaw: 0.029913920909166336
+      Yaw: 0.4699137210845947
     Saved: ~
 Window Geometry:
   Displays:

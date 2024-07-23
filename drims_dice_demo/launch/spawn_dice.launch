@@ -1,0 +1,4 @@
+<launch>
+    <!-- Spawn dice -->
+    <node name="spawn_dice_py" pkg="drims_dice_demo" type="dice.py" output="screen" />  
+  </launch>
