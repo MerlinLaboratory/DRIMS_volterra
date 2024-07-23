@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="environment_name" default="abb"/>
-    <arg name="planner" default="false"/>
+  <arg name="robot" default="yumi"/>
+  <arg name="environment_name" default="abb"/>
+  <arg name="planner" default="false"/>
 
 	<!-- Launch arguments -->
 	<arg name="control_server_params" default="$(find abb_wrapper_control)/configs/control_server_params.yaml"/>
@@ -11,6 +12,6 @@
    
 	<!-- Load main node -->
   <node name="control_server_node" pkg="abb_wrapper_control" type="control_server" args="$(arg planner)" output="screen">
-     <param name="robot_type" type="string" value="yumi"/>
+     <param name="robot" type="string" value="$(arg robot)"/>
   </node>
 </launch>

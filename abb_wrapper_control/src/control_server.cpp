@@ -20,10 +20,10 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "abb_control_server");
 
     ros::NodeHandle nh_("~");
-    std::string robot_type;
-    nh_.param<std::string>("robot_type", robot_type, "");
+    std::string robot;
+    nh_.param<std::string>("robot", robot, "");
 
-    ROS_INFO("The arm you want to use is: %s", robot_type.c_str());
+    ROS_INFO("The arm you want to use is: %s", robot.c_str());
  
     // Get the params from the loaded YAML file
 
@@ -37,10 +37,10 @@ int main(int argc, char **argv)
     bool choice_planner;
     
     // Set the move group name based on the robot
-    if(robot_type == "gofa"){
+    if(robot == "gofa"){
         ROS_INFO("Set the group name for the gofa arm");
         group_name = "arm";
-    }else if (robot_type == "yumi"){
+    }else if (robot == "yumi"){
         ROS_INFO("Set the group name for the yumi arm");
         group_name = "arm";
     }else{
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     // /*------------------- Pose Plan ------------------------*/
 
     ROS_INFO("Creating the pose plan object");
-    PosePlan pose_plan_obj(nh_, robot_type, group_name, end_effector_name);
+    PosePlan pose_plan_obj(nh_, robot, group_name, end_effector_name);
 
     // /*-------------------------------------------------------*/
 
