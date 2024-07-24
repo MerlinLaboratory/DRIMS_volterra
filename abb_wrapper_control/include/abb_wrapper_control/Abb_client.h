@@ -31,12 +31,12 @@ class AbbClient {
 	public:
         AbbClient();
 
-		AbbClient(ros::NodeHandle& nh_);
+		AbbClient(ros::NodeHandle& nh_, std::string robot);
 
         ~AbbClient();
 
         // Initializing function
-        bool initialize(ros::NodeHandle& nh_);
+        bool initialize(ros::NodeHandle& nh_, std::string robot);
 
         // Service call function for arm control
         bool call_arm_control_service(trajectory_msgs::JointTrajectory& computed_trajectory);

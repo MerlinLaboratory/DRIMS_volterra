@@ -20,17 +20,17 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
         ROS_ERROR("The parsing of task parameters went wrong. Be careful, using default values...");
     }
 
-    // Initializing Abb Client (TODO: Return error if initialize returns false)
-    this->abb_client.initialize(this->nh);
-    std::string robot;
-    if (nh_.getParam("/control_server_node/robot", robot))
+    if (nh_.getParam("/control_server_node/robot", this->robot))
     {
-        ROS_INFO("The arm you want to use is: %s", robot.c_str());
+        ROS_INFO("The arm you want to use is: %s", this->robot.c_str());
     }
     else
     {
         ROS_ERROR("Failed to get '/control_server_node/robot' parameter.");
     }
+
+    // Initializing Abb Client (TODO: Return error if initialize returns false)
+    this->abb_client.initialize(this->nh, robot);
 
     // Set the move group name based on the robot
     if (robot == "gofa")
@@ -368,30 +368,34 @@ bool TaskSequencer::CloseGripper(bool close)
 {
 
     std_srvs::SetBool set_bool_srv;
-
-    if (!this->abb_client.call_closing_gripper(close))
+    if (this->robot == "yumi")
     {
-        ROS_ERROR("Could not close the gripper.");
-        set_bool_srv.response.success = false;
-        set_bool_srv.response.message = "The service call_closing_gripper was NOT performed correctly!";
-        return false;
+        if (!this->abb_client.call_closing_gripper(close) && this->robot == "yumi")
+        {
+            ROS_ERROR("Could not close the gripper.");
+            set_bool_srv.response.success = false;
+            set_bool_srv.response.message = "The service call_closing_gripper was NOT performed correctly!";
+            return false;
+        }
+        return set_bool_srv.response.success = true;
     }
-    return set_bool_srv.response.success = true;
 }
 
 bool TaskSequencer::OpenGripper(bool open)
 {
 
     std_srvs::SetBool set_bool_srv;
-
-    if (!this->abb_client.call_opening_gripper(open))
+    if (this->robot == "yumi")
     {
-        ROS_ERROR("Could not open the gripper.");
-        set_bool_srv.response.success = false;
-        set_bool_srv.response.message = "The service call_opening_gripper was NOT performed correctly!";
-        return false;
+        if (!this->abb_client.call_opening_gripper(open))
+        {
+            ROS_ERROR("Could not open the gripper.");
+            set_bool_srv.response.success = false;
+            set_bool_srv.response.message = "The service call_opening_gripper was NOT performed correctly!";
+            return false;
+        }
+        return set_bool_srv.response.success = true;
     }
-    return set_bool_srv.response.success = true;
 }
 
 // Convert xyzrpy vector to geometry_msgs Pose

@@ -98,6 +98,7 @@ class TaskSequencer {
         geometry_msgs::Pose pre_grasp_T;
  
         // MoveIt stuff and functions for FK and IK
+        std::string robot;
         std::string group_name;
         std::string end_effector_name;
         std::shared_ptr<robot_model_loader::RobotModelLoader> robot_model_loader_ptr;

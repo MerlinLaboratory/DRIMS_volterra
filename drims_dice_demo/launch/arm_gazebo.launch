@@ -37,7 +37,7 @@
     <rosparam file="$(arg controller_config_file)" command="load" />
     <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
       args="$(arg controllers)" output="screen" respawn="false" />
-    
+
     <!-- Load YuMi gripper (grip_in for closing, grip_out for opening) -->
     <node name="gripper_simulation" pkg="drims_dice_demo" type="gripper_simulation.py" />
   </group>
@@ -54,7 +54,7 @@
 
   <!-- Spawn robot -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-    args="-param robot_description -urdf -model $(arg robot) " />
+    args="-param robot_description -urdf -model $(arg robot)" />
 
   <!-- MOVEIT -->
   <arg name="fake_execution_type" default="interpolate" />
@@ -78,7 +78,7 @@
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
     <include file="$(find yumi_single_arm_moveit_config)/launch/moveit_rviz.launch"
       if="$(arg use_rviz)">
-      <arg name="rviz_config" value="$(find drims_dice_demo)/config/moveit.rviz" />
+      <arg name="rviz_config" value="$(find drims_dice_demo)/rviz/yumi.rviz" />
       <arg name="debug" value="$(arg debug)" />
     </include>
   </group>
@@ -93,11 +93,10 @@
       <arg name="pipeline" value="$(arg pipeline)" />
       <arg name="load_robot_description" value="$(arg load_robot_description)" />
     </include>
-
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
     <include file="$(find gofa_moveit_config)/launch/moveit_rviz.launch"
       if="$(arg use_rviz)">
-      <arg name="rviz_config" value="$(find drims_dice_demo)/config/moveit.rviz" />
+      <arg name="rviz_config" value="$(find drims_dice_demo)/rviz/gofa.rviz" />
       <arg name="debug" value="$(arg debug)" />
     </include>
   </group>

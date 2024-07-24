@@ -1,5 +1,5 @@
 <launch>
-  <arg name="robot" default="gofa" doc="Which robot to load? [gofa, yumi_single_arm]"/>
+  <arg name="robot" default="gofa" doc="Which robot to load? [gofa, yumi]"/>
 
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find drims_dice_demo)/xacro/robot_arm.urdf.xacro robot:=$(arg robot)" />
   <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
