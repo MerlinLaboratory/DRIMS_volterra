@@ -157,6 +157,9 @@ bool JointPlan::performMotionPlan()
     ROS_INFO("Visualizing the computed plan as trajectory line.");
     visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group->getLinkModel(this->end_effector_name), joint_model_group, rvt::LIME_GREEN);
     visual_tools.setBaseFrame(this->robot + "_base_link");
+    Eigen::Isometry3d text_pose = Eigen::Isometry3d::Identity();
+    text_pose.translation().z() = 0.7;
+    visual_tools.publishText(text_pose, "Joint Plan", rvt::WHITE, rvt::XLARGE);  
     visual_tools.trigger();
 
 #ifdef PROMPT

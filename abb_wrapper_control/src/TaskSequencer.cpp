@@ -394,8 +394,9 @@ bool TaskSequencer::OpenGripper(bool open)
             set_bool_srv.response.message = "The service call_opening_gripper was NOT performed correctly!";
             return false;
         }
-        return set_bool_srv.response.success = true;
+        
     }
+    return set_bool_srv.response.success = true;
 }
 
 // Convert xyzrpy vector to geometry_msgs Pose

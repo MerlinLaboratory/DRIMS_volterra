@@ -2,6 +2,8 @@
 # Remember that there might be other important constants that can only be changed from the src code.
 
 task_sequencer:
+  
+  desired_dice_value: 1
 
   ################## PREGRASP AND GRASP TRANSFORM ##############################
   # Transform from world to grasp pose frame (xyzrpy) [got it from: rosrun tf tf_echo single_yumi_base_link grasp_link] (DEFAULT)

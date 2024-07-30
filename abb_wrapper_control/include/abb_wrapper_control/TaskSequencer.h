@@ -12,6 +12,7 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefano.angeli@ing.uni
 #include <tf_conversions/tf_eigen.h>
 
 // ROS Service and Message Includes
+#include "std_msgs/Int16.h"
 #include "std_msgs/Empty.h"
 #include "std_msgs/Float64.h"
 #include "std_msgs/Bool.h"
