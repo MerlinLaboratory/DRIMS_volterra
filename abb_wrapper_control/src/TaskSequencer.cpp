@@ -192,7 +192,7 @@ bool TaskSequencer::call_example_task(std_srvs::SetBool::Request &req, std_srvs:
 
     // // Plan and go to Joint Position A
 
-    this->PlanAndExecuteJoint(joint_pos_A, true);
+    this->PlanAndExecuteJoint(joint_pos_A);
 
     // Now, everything finished well
     res.success = true;
@@ -279,14 +279,14 @@ bool TaskSequencer::PlanAndExecutePose(geometry_msgs::Pose &pose, bool is_relati
     return set_bool_srv.response.success = true;
 }
 
-bool TaskSequencer::PlanAndExecuteJoint(std::vector<double> &joint_goal, bool flag_state)
+bool TaskSequencer::PlanAndExecuteJoint(std::vector<double> &joint_goal)
 {
 
     std_srvs::SetBool set_bool_srv;
 
     /* PLAN 1: Plan to JOINT Position */
 
-    if (!this->abb_client.call_joint_service(this->joint_pos_A, flag_state, this->tmp_traj_arm, this->tmp_traj_arm))
+    if (!this->abb_client.call_joint_service(joint_goal, true, this->tmp_traj_arm, this->tmp_traj_arm))
     {
         ROS_ERROR("Could not plan to the specified JOINT position.");
         set_bool_srv.response.success = false;

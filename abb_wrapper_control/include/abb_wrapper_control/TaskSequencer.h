@@ -57,7 +57,7 @@ class TaskSequencer {
 
         // Function Plan and Execute Joint
 
-        bool PlanAndExecuteJoint(std::vector<double>& joint_goal, bool flag_state);
+        bool PlanAndExecuteJoint(std::vector<double>& joint_goal);
 
         // Function Plan and Execute Slerp
 

@@ -1,18 +1,19 @@
 Panels:
   - Class: rviz/Displays
-    Help Height: 70
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
         - /Status1
-        - /Grid1
         - /TF1
         - /TF1/Frames1
+        - /TF1/Tree1
         - /RobotModel1
         - /MarkerArray1
+        - /Pose1
       Splitter Ratio: 0.5
-    Tree Height: 155
+    Tree Height: 465
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -50,22 +51,84 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/TF
-      Enabled: false
+      Enabled: true
       Filter (blacklist): ""
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        base_link_camera_stand:
+          Value: false
+        base_link_surface:
+          Value: false
+        base_link_table:
+          Value: false
+        camera_holder:
+          Value: false
+        dice:
+          Value: false
+        ext_camera_link:
+          Value: false
+        grasp_link:
+          Value: true
+        gripper_base:
+          Value: false
+        gripper_finger_l:
+          Value: false
+        gripper_finger_r:
+          Value: false
+        link_1:
+          Value: false
+        link_2:
+          Value: false
+        link_3:
+          Value: false
+        link_4:
+          Value: false
+        link_5:
+          Value: false
+        link_6:
+          Value: false
+        link_7:
+          Value: false
+        world:
+          Value: false
+        yumi_base_link:
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
-      Show Arrows: true
+      Show Arrows: false
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        world:
+          base_link_table:
+            base_link_camera_stand:
+              camera_holder:
+                ext_camera_link:
+                  {}
+            yumi_base_link:
+              base_link_surface:
+                {}
+              link_1:
+                link_2:
+                  link_3:
+                    link_4:
+                      link_5:
+                        link_6:
+                          link_7:
+                            gripper_base:
+                              grasp_link:
+                                {}
+                              gripper_finger_l:
+                                {}
+                              gripper_finger_r:
+                                {}
+          dice:
+            {}
       Update Interval: 0
-      Value: false
+      Value: true
     - Class: moveit_rviz_plugin/PlanningScene
       Enabled: false
       Move Group Namespace: ""
@@ -462,11 +525,39 @@ Visualization Manager:
         {}
       Queue Size: 100
       Value: true
+    - Alpha: 1
+      Axes Length: 0.30000001192092896
+      Axes Radius: 0.019999999552965164
+      Class: rviz/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Queue Size: 10
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Axes
+      Topic: /dice_pose
+      Unreliable: false
+      Value: true
+    - Class: rviz/Image
+      Enabled: true
+      Image Topic: /oak/rgb/image_raw
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: yumi_base_link
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -478,7 +569,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.022225379943848
+      Distance: 2.476895809173584
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -486,17 +577,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.75
       Focal Point:
-        X: 0.2998615503311157
-        Y: 0.1201230138540268
-        Z: 0.66929692029953
+        X: 0.22913694381713867
+        Y: -0.4460321068763733
+        Z: 0.8677209615707397
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5000000596046448
+      Pitch: 0.5049988031387329
       Target Frame: world
-      Yaw: 0.7449144124984741
+      Yaw: 5.238092422485352
     Saved: ~
 Window Geometry:
   Displays:
@@ -506,11 +597,13 @@ Window Geometry:
     collapsed: false
   Hide Left Dock: false
   Hide Right Dock: false
+  Image:
+    collapsed: false
   MotionPlanning:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000001f30000039efc0200000011fb000000100044006900730070006c006100790073010000003d0000011e000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a00560069006500770073000000010c000000a4000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000161000002190000017d00fffffffb00000024005200760069007a00560069007300750061006c0054006f006f006c00730047007500690000000306000000d50000004100fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001d0000002260000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000026e000001880000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000026e000001880000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000026e000001880000000000000000fb00000024005200760069007a00560069007300750061006c0054006f006f006c007300470075006901000003800000005b0000004100ffffff000005870000039e00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000001f30000039efc0200000012fb000000100044006900730070006c006100790073010000003d0000020e000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a00560069006500770073000000010c000000a4000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006700000001380000017d0000017d00fffffffb00000024005200760069007a00560069007300750061006c0054006f006f006c00730047007500690000000306000000d50000004100fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001d0000002260000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000026e000001880000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000026e000001880000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000026e000001880000000000000000fb00000024005200760069007a00560069007300750061006c0054006f006f006c007300470075006901000002510000005b0000004100fffffffb0000000a0049006d00610067006501000002b2000001290000001600ffffff000005870000039e00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RvizVisualToolsGui:
     collapsed: false
   Views:

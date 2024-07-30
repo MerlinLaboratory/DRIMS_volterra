@@ -108,7 +108,8 @@ bool SlerpPlan::initialize(geometry_msgs::Pose goal_pose, geometry_msgs::Pose st
     if (is_goal_relative)
     {
         this->goalAff = this->end_effector_state * this->goalAff;
-        this->startAff = this->end_effector_state * this->startAff;
+        // this->startAff = this->end_effector_state * this->startAff;
+        this->startAff = this->end_effector_state;
     }
 
     // Setting the past trajectory
@@ -176,8 +177,8 @@ bool SlerpPlan::performMotionPlan()
     }
 
     // Scale the velocity and acceleration of the computed trajectory
-    const double velocity_scaling_factor = 0.1;     // Set your desired velocity scaling factor
-    const double acceleration_scaling_factor = 0.1; // Set your desired acceleration scaling factor
+    const double velocity_scaling_factor = 0.5;      // Set your desired velocity scaling factor
+    const double acceleration_scaling_factor = 0.25; // Set your desired acceleration scaling factor
 
     // Planning for the waypoints path
     moveit_msgs::RobotTrajectory trajectory;
@@ -210,7 +211,10 @@ bool SlerpPlan::performMotionPlan()
     // visual_tools.deleteAllMarkers();
     visual_tools.publishTrajectoryLine(trajectory, joint_model_group->getLinkModel(this->end_effector_name), joint_model_group, rvt::LIME_GREEN);
     visual_tools.setBaseFrame(this->robot + "_base_link");
-    visual_tools.publishAxisLabeled(cart_waypoints.back(), "goal pose");
+    Eigen::Isometry3d text_pose = Eigen::Isometry3d::Identity();
+    text_pose.translation().z() = 0.7;
+    visual_tools.publishText(text_pose, "Slerp Plan", rvt::WHITE, rvt::XLARGE);
+    visual_tools.publishAxisLabeled(cart_waypoints.back(), "Goal Pose");
     visual_tools.trigger();
 
 #ifdef PROMPT
@@ -246,7 +250,14 @@ void SlerpPlan::computeWaypointsFromPoses(const Eigen::Affine3d &start_pose, con
 
     // Setting the number of wp according to diff_vec
     std::cout << "this->n_wp is: " << this->n_wp << std::endl;
-    this->real_n_wp = std::ceil(diff_vec.norm() * this->n_wp);
+    if (diff_vec.norm() == 0.0)
+    {
+        this->real_n_wp = 2.0;
+    }
+    else
+    {
+        this->real_n_wp = std::ceil(diff_vec.norm() * this->n_wp);
+    }
     if (DEBUG)
         ROS_INFO_STREAM("The norm of the diff_vec is " << diff_vec.norm() << ", so the new number of waypoints is " << this->real_n_wp << ".");
 

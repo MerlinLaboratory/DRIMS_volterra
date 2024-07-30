@@ -107,7 +107,8 @@ bool PosePlan::initialize(geometry_msgs::Pose goal_pose, geometry_msgs::Pose sta
     if (is_goal_relative)
     {
         this->goalPoseAff = this->end_effector_state * this->goalPoseAff;
-        this->startAff = this->end_effector_state * this->startAff;
+        // this->startAff = this->end_effector_state * this->startAff;
+        this->startAff = this->end_effector_state;
     }
 
     // Reconvert to geometry_msgs Pose
@@ -151,6 +152,7 @@ bool PosePlan::performMotionPlan()
     namespace rvt = rviz_visual_tools;
     moveit_visual_tools::MoveItVisualTools visual_tools("world");
     visual_tools.deleteAllMarkers();
+    visual_tools.trigger();
 #endif
 
     // Printing the planning group frame and the group ee frame
@@ -197,7 +199,10 @@ bool PosePlan::performMotionPlan()
     // visual_tools.deleteAllMarkers();
     visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group->getLinkModel(this->end_effector_name), joint_model_group, rvt::LIME_GREEN);
     visual_tools.setBaseFrame(this->robot + "_base_link");
-    visual_tools.publishAxisLabeled(this->goalPose, "goal pose");
+    Eigen::Isometry3d text_pose = Eigen::Isometry3d::Identity();
+    text_pose.translation().z() = 0.7;
+    visual_tools.publishText(text_pose, "Cartesian Plan", rvt::WHITE, rvt::XLARGE);     
+    visual_tools.publishAxisLabeled(this->goalPose, "Goal Pose");
     visual_tools.trigger();
 
 #ifdef PROMPT
