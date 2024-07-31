@@ -10,7 +10,7 @@ This repo contains the software to partecipate to the 2024 DRIMS Summer School.
 4. ```catkin build -cs```
 
 ## Gazebo Simulation
-If there are no errors you are ready to proceed to launch the Gazebo simulation of the robot. You can select between the Yumi and GoFa arm by changin the launch param:
+If there are no errors you are ready to proceed to launch the Gazebo simulation of the robot. You can select between the Yumi and GoFa arm by changing the launch param (robot:=yumi for the YuMi arm, or robot:=gofa for GoFa arm:
 ```bash
   source devel/setup.bash
   roslaunch drims_dice_demo arm_gazebo.launch robot:=yumi
