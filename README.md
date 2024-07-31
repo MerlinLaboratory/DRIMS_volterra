@@ -10,16 +10,16 @@ This repo contains the software to partecipate to the 2024 DRIMS Summer School.
 4. ```catkin build -cs```
 
 ## Gazebo Simulation
-If there are no errors you are ready to proceed to launch the Gazebo simulation of the robot:
+If there are no errors you are ready to proceed to launch the Gazebo simulation of the robot. You can select between the Yumi and GoFa arm by changin the launch param:
 ```bash
   source devel/setup.bash
-  roslaunch irim_ss_pkg yumi_gazebo.launch
+  roslaunch drims_dice_demo arm_gazebo.launch robot:=yumi
 ```
 ### Motion Planning
 Launch the PosePlan, SlerpPlan and JointPlan ROS Services server:
 ```bash
   source devel/setup.bash
-  roslaunch abb_wrapper_control launchControlServer.launch
+  roslaunch abb_wrapper_control launchControlServer.launch robot:=yumi
 ```
 
 
