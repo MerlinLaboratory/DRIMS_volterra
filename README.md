@@ -9,6 +9,19 @@ This repo contains the software to partecipate to the 2024 DRIMS Summer School.
 3. ```rosdep install --from-paths src --ignore-src -r -y```
 4. ```catkin build -cs```
 
+## Gazebo Simulation
+If there are no errors you are ready to proceed to launch the Gazebo simulation of the robot:
+```bash
+  source devel/setup.bash
+  roslaunch irim_ss_pkg yumi_gazebo.launch
+```
+### Motion Planning
+Launch the PosePlan, SlerpPlan and JointPlan ROS Services server:
+```bash
+  source devel/setup.bash
+  roslaunch abb_wrapper_control launchControlServer.launch
+```
+
 
 
 
