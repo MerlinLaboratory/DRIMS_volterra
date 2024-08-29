@@ -15,10 +15,18 @@ abb:
 ## Joint plan service name
  joint_plan_service_name: joint_plan_service
 
+####YUMI gripper ##########
 ## Closing gripper service name
- closing_gripper_service_name: grip_in
+ closing_gripper_yumi_service_name: grip_in
 
 ## Opening gripper service name
- opening_gripper_service_name: grip_out
+ opening_gripper_yumi_service_name: grip_out
+
+####SCHUNK gripper ##########
+## Closing gripper service name
+ closing_gripper_gofa_service_name: simple_grip
+
+## Opening gripper service name
+ opening_gripper_gofa_service_name: jog_to
 
 

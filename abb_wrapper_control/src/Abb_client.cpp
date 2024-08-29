@@ -36,6 +36,17 @@ bool AbbClient::initialize(ros::NodeHandle &nh_, std::string robot)
     // Initializing node handle
     this->nh = nh_;
 
+    // Initialize the robot type
+
+    if (nh_.getParam("/control_server_node/robot", this->robot))
+    {
+        ROS_INFO("The arm you want to use is: %s", this->robot.c_str());
+    }
+    else
+    {
+        ROS_ERROR("Failed to get '/control_server_node/robot' parameter.");
+    }
+
     // Parse from YAML the name of the services
 
     if (!nh_.getParam("/abb/arm_control_service_name", this->arm_control_service_name))
@@ -63,16 +74,28 @@ bool AbbClient::initialize(ros::NodeHandle &nh_, std::string robot)
         ROS_ERROR("Failed to load the joint_service_name!");
     };
 
-    // Parse gripper clients
+    // Parse gripper YuMi clients
 
-    if (!nh_.getParam("/abb/closing_gripper_service_name", this->gripper_service_grip_in))
+    if (!nh_.getParam("/abb/closing_gripper_yumi_service_name", this->gripper_service_grip_in))
     {
-        ROS_ERROR("Failed to load the closing_gripper_service_name!");
+        ROS_ERROR("Failed to load the closing_gripper_yumi_service_name!");
     };
 
-    if (!nh_.getParam("/abb/opening_gripper_service_name", this->gripper_service_grip_out))
+    if (!nh_.getParam("/abb/opening_gripper_yumi_service_name", this->gripper_service_grip_out))
     {
-        ROS_ERROR("Failed to load the opening_gripper_service_name!");
+        ROS_ERROR("Failed to load the opening_gripper_yumi_service_name!");
+    };
+
+    // Parse gripper GoFa clients
+
+    if (!nh_.getParam("/abb/closing_gripper_gofa_service_name", this->gripper_service_simple_grip))
+    {
+        ROS_ERROR("Failed to load the closing_gripper_yumi_service_name!");
+    };
+
+    if (!nh_.getParam("/abb/opening_gripper_gofa_service_name", this->gripper_service_jog_to))
+    {
+        ROS_ERROR("Failed to load the opening_gripper_yumi_service_name!");
     };
 
     // Initializing service clients after waiting
@@ -98,8 +121,7 @@ bool AbbClient::initialize(ros::NodeHandle &nh_, std::string robot)
     this->joint_client = this->nh.serviceClient<abb_wrapper_msgs::joint_plan>("/" + this->joint_service_name);
 
     if (robot == "yumi")
-    {   
-        std::cout << "PIPPO" << std::endl;
+    {
         if (!ros::service::waitForService("/" + this->gripper_service_grip_in, ros::Duration(1.0)))
             return false;
         this->grip_in_client = this->nh.serviceClient<std_srvs::Trigger>("/" + this->gripper_service_grip_in);
@@ -107,6 +129,17 @@ bool AbbClient::initialize(ros::NodeHandle &nh_, std::string robot)
         if (!ros::service::waitForService("/" + this->gripper_service_grip_out, ros::Duration(1.0)))
             return false;
         this->grip_out_client = this->nh.serviceClient<std_srvs::Trigger>("/" + this->gripper_service_grip_out);
+    }
+
+    if (robot == "gofa")
+    {
+        if (!ros::service::waitForService("/" + this->gripper_service_simple_grip, ros::Duration(1.0)))
+            return false;
+        this->simple_grip_client = this->nh.serviceClient<schunk_interfaces::SimpleGrip>("/" + this->gripper_service_simple_grip);
+
+        if (!ros::service::waitForService("/" + this->gripper_service_jog_to, ros::Duration(1.0)))
+            return false;
+        this->jog_to_client = this->nh.serviceClient<schunk_interfaces::JogTo>("/" + this->gripper_service_jog_to);
     }
     // At this point initializing completed
     return true;
@@ -288,30 +321,50 @@ bool AbbClient::call_slerp_service(geometry_msgs::Pose goal_pose, geometry_msgs:
 
 bool AbbClient::call_closing_gripper(bool close)
 {
-
+    // Calling the service for YuMi gripper
     std_srvs::Trigger trigger_srv;
-
-    // Calling the service
-    if (close && !this->grip_in_client.call(trigger_srv))
+    if (close && this->robot == "yumi" && !this->grip_in_client.call(trigger_srv))
     {
         ROS_ERROR("Failed to contact the grip_in server. Returning...");
         return false;
     }
 
-    return trigger_srv.response.success;
+    // Calling the service for Schunk gripper
+    schunk_interfaces::SimpleGrip simple_grip_srv;
+    simple_grip_srv.request.gripping_force = 100;
+    simple_grip_srv.request.gripping_direction = 1;
+
+    if (close && this->robot == "gofa" && !this->simple_grip_client.call(simple_grip_srv))
+    {
+        ROS_ERROR("Failed to contact the simple_grip server. Returning...");
+        return false;
+    }
+
+    return true;
 }
 
 bool AbbClient::call_opening_gripper(bool open)
 {
-
+    // Calling the service for YuMi gripper
     std_srvs::Trigger trigger_srv;
 
-    // Calling the service
-    if (open && !this->grip_out_client.call(trigger_srv))
+    if (open && this->robot == "yumi" && !this->grip_out_client.call(trigger_srv))
     {
         ROS_ERROR("Failed to contact the grip_out server. Returning...");
         return false;
     }
 
-    return trigger_srv.response.success;
+    // Calling the service for Schunk gripper
+    schunk_interfaces::JogTo jog_to_srv;
+    jog_to_srv.request.position = 0.0;
+    jog_to_srv.request.velocity = 0.0;
+    jog_to_srv.request.motion_type = 0;
+
+    if (open && this->robot == "gofa" && !this->jog_to_client.call(jog_to_srv))
+    {
+        ROS_ERROR("Failed to contact the jog_to server. Returning...");
+        return false;
+    }
+
+    return true;
 }

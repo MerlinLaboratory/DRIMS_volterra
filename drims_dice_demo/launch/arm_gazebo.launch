@@ -45,11 +45,14 @@
   <group if="$(eval arg('robot') == 'gofa')">
     <arg name="controller_config_file"
       default="$(find drims_dice_demo)/config/gofa_controllers.yaml" />
-    <arg name="controllers" default="joint_state_controller robot_controller" />
+    <arg name="controllers" default="joint_state_controller robot_controller gripper_controller" />
     <!-- Load controller settings -->
     <rosparam file="$(arg controller_config_file)" command="load" />
     <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
       args="$(arg controllers)" output="screen" respawn="false" />
+
+    <!-- Launching mockup services to simulate how to command real hardware -->
+    <node name="schunk_srv_mockup" pkg="schunk_gazebo" type="gripper.py" output="screen" />
   </group>
 
   <!-- Spawn robot -->

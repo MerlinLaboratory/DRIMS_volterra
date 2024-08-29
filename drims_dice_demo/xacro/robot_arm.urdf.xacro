@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
 
     <!-- Parameters -->
+    <xacro:arg name="prefix" default="" />
     <xacro:arg name="robot" default="gofa" />
     <xacro:arg name="hardware_interface" default="hardware_interface/PositionJointInterface" />
     <xacro:arg name="gripper_interface" default="hardware_interface/EffortJointInterface" />
@@ -23,14 +24,20 @@
     <xacro:include filename="$(find drims_dice_demo)/xacro/Extra/camera_stand.xacro" />
     <!-- Import the surface -->
     <xacro:include filename="$(find drims_dice_demo)/xacro/Extra/surface.xacro" />
+
     <!-- YUMI SINGLE ARM MACRO    -->
     <xacro:include filename="$(find omnicore_description)/xacro/YumiSingleArm/single_yumi.xacro" />
     <!--Import
     the yumi servo gripper macro -->
     <xacro:include
         filename="$(find omnicore_description)/Grippers/YumiServoGripper/yumi_servo_gripper.xacro" />
+
     <!-- GOFA MACRO -->
     <xacro:include filename="$(find omnicore_description)/xacro/Gofa/gofa.urdf.xacro" />
+
+    <!-- Import the Schunk gripper macro -->
+    <xacro:include filename="$(find schunk_description)/urdf/connection.xacro" />
+    <xacro:include filename="$(find schunk_gazebo)/urdf/gazebo_complete.xacro" />
 
     <!-- World fixed joint -->
     <link name="world" />
@@ -50,6 +57,7 @@
     </xacro:surface>
 
     <!-- Choose between gofa and yumi_single_arm -->
+
     <xacro:if value="${robot == 'yumi'}">
         <xacro:single_yumi parent="base_link_table" child="${robot}_base_link"
             hardware_interface="${hardware_interface}">
@@ -69,10 +77,13 @@
             <origin xyz="-0.3 0 0.627" rpy="0 0 -1.57" />
         </xacro:gofa>
 
-        <!-- TO DO: Add Zimmer Gripper-->
-
+        <xacro:egk_40_gazebo
+            prefix="$(arg prefix)"
+            parent="flange"
+            px="0.0" py="0.0" pz="0.011"
+            rx="${pi / 2.0}" ry="0.0" rz="0.0"
+            hardware_interface="$(arg gripper_interface)" /> 
     </xacro:if>
-
 
     <gazebo>
         <plugin name="ros_control" filename="libgazebo_ros_control.so">

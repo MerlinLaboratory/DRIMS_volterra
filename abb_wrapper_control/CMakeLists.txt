@@ -30,6 +30,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   tf_conversions
   visualization_msgs
+  schunk_interfaces
 )
 
 ## System dependencies are found with CMake's conventions
@@ -99,6 +100,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(sdformat11 REQUIRED)
 find_package(abb_wrapper_msgs REQUIRED)
+find_package(schunk_interfaces REQUIRED)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -133,7 +135,7 @@ find_package(abb_wrapper_msgs REQUIRED)
 catkin_package(
    INCLUDE_DIRS include
    ${catkin_INCLUDE_DIRS}
-   CATKIN_DEPENDS  abb_wrapper_msgs actionlib_msgs moveit_ros_planning_interface  std_msgs std_srvs
+   CATKIN_DEPENDS  abb_wrapper_msgs schunk_interfaces actionlib_msgs moveit_ros_planning_interface  std_msgs std_srvs
    LIBRARIES ${PROJECT_NAME}_lib
 )
 
@@ -171,7 +173,7 @@ add_library(${PROJECT_NAME}_lib
 target_include_directories(${PROJECT_NAME}_lib PRIVATE
     ${catkin_INCLUDE_DIRS} ${abb_wrapper_msgs_INCLUDE_DIRS})
 
-target_link_libraries(${PROJECT_NAME}_lib ${catkin_LIBRARIES} ${ROS_LIBRARIES} ${abb_wrapper_msgs_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_lib ${catkin_LIBRARIES} ${ROS_LIBRARIES} ${schunk_interfaces_LIBRARIES} ${abb_wrapper_msgs_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -179,7 +181,7 @@ target_link_libraries(${PROJECT_NAME}_lib ${catkin_LIBRARIES} ${ROS_LIBRARIES} $
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 #!!!# add_dependencies line at the end ensures that your library ${PROJECT_NAME}_lib is built only after the messages from abb_wrapper_msgs have been generated (abb_wrapper_msgs_generate_messages_cpp).
-add_dependencies(${PROJECT_NAME}_lib abb_wrapper_msgs_generate_messages_cpp)
+add_dependencies(${PROJECT_NAME}_lib schunk_interfaces_generate_messages_cpp abb_wrapper_msgs_generate_messages_cpp)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -202,19 +204,19 @@ add_dependencies(${PROJECT_NAME}_lib abb_wrapper_msgs_generate_messages_cpp)
 
 # NODE: Lower level position controls
 add_executable(control_server src/control_server.cpp ${OBJECTS_SOURCE_FILES})
-add_dependencies(control_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}  abb_wrapper_msgs_generate_messages_cpp)
+add_dependencies(control_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} schunk_interfaces_generate_messages_cpp abb_wrapper_msgs_generate_messages_cpp)
 target_link_libraries(control_server ${catkin_LIBRARIES} ${ROS_LIBRARIES})
 
 # NODE: Higher level sequences of position controls
 
 add_executable(task_server_example src/task_server_example.cpp ${OBJECTS_SOURCE_FILES})
-add_dependencies(task_server_example ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} abb_wrapper_msgs_generate_messages_cpp)
+add_dependencies(task_server_example ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} schunk_interfaces_generate_messages_cpp abb_wrapper_msgs_generate_messages_cpp)
 target_link_libraries(task_server_example ${catkin_LIBRARIES} ${ROS_LIBRARIES})
 
 # NODE: Higher level sequences of position controls
 
 add_executable(task_server_template src/task_server_template.cpp ${OBJECTS_SOURCE_FILES})
-add_dependencies(task_server_template ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} abb_wrapper_msgs_generate_messages_cpp)
+add_dependencies(task_server_template ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} schunk_interfaces_generate_messages_cpp abb_wrapper_msgs_generate_messages_cpp)
 target_link_libraries(task_server_template ${catkin_LIBRARIES} ${ROS_LIBRARIES})
 
 # NODE: Utility to publish collision objects to planning scene from world file

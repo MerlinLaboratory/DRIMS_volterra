@@ -366,36 +366,31 @@ bool TaskSequencer::PlanAndExecuteSlerp(geometry_msgs::Pose &pose, bool is_relat
 
 bool TaskSequencer::CloseGripper(bool close)
 {
-
     std_srvs::SetBool set_bool_srv;
-    if (this->robot == "yumi")
+
+    if (!this->abb_client.call_closing_gripper(close))
     {
-        if (!this->abb_client.call_closing_gripper(close) && this->robot == "yumi")
-        {
-            ROS_ERROR("Could not close the gripper.");
-            set_bool_srv.response.success = false;
-            set_bool_srv.response.message = "The service call_closing_gripper was NOT performed correctly!";
-            return false;
-        }
-        return set_bool_srv.response.success = true;
+        ROS_ERROR("Could not close the gripper.");
+        set_bool_srv.response.success = false;
+        set_bool_srv.response.message = "The service call_closing_gripper was NOT performed correctly!";
+        return false;
     }
+    return set_bool_srv.response.success = true;
 }
 
 bool TaskSequencer::OpenGripper(bool open)
 {
 
     std_srvs::SetBool set_bool_srv;
-    if (this->robot == "yumi")
+
+    if (!this->abb_client.call_opening_gripper(open))
     {
-        if (!this->abb_client.call_opening_gripper(open))
-        {
-            ROS_ERROR("Could not open the gripper.");
-            set_bool_srv.response.success = false;
-            set_bool_srv.response.message = "The service call_opening_gripper was NOT performed correctly!";
-            return false;
-        }
-        
+        ROS_ERROR("Could not open the gripper.");
+        set_bool_srv.response.success = false;
+        set_bool_srv.response.message = "The service call_opening_gripper was NOT performed correctly!";
+        return false;
     }
+
     return set_bool_srv.response.success = true;
 }
 
