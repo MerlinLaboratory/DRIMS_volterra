@@ -43,6 +43,6 @@ gripper_controller:
     - finger2_joint
 
   finger1_joint: 
-    pid: {p: 0.1, i: 0.0, d: 1.0}
+    pid: {p: 500.0, i: 10.0, d: 100.0}
   finger2_joint: 
-    pid: {p: 0.1, i: 0.0, d: 1.0}
+    pid: {p: 500.0, i: 10.0, d: 100.0}

@@ -160,14 +160,19 @@ class dice_ros:
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 continue
 
+            # try:
+            #     (trans_fing,rot_fing) = self.listener.lookupTransform('/dice', '/gripper_finger_l', rospy.Time(0))
+            # except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+            #     continue
+
             try:
-                (trans_fing,rot_fing) = self.listener.lookupTransform('/dice', '/gripper_finger_l', rospy.Time(0))
+                (trans_fing,rot_fing) = self.listener.lookupTransform('/dice', '/leftfinger_body', rospy.Time(0))
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 continue
 
 
             try:
-                (trans_dice,rot_dice) = self.listener.lookupTransform('/yumi_base_link', '/dice', rospy.Time(0))
+                (trans_dice,rot_dice) = self.listener.lookupTransform('/gofa_base_link', '/dice', rospy.Time(0))
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 continue
 
@@ -175,7 +180,7 @@ class dice_ros:
             # eul = euler_from_quaternion([rot_dice[0],rot_dice[1],rot_dice[2],rot_dice[3]],axes="sxyz")
             
 
-            self.msg_pose.header.frame_id  = "yumi_base_link"
+            self.msg_pose.header.frame_id  = "gofa_base_link"
             self.msg_pose.header.stamp     = rospy.Time.now()
             self.msg_pose.pose.position.x    = trans_dice[0]
             self.msg_pose.pose.position.y    = trans_dice[1]

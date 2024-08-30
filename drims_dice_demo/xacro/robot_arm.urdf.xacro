@@ -36,7 +36,6 @@
     <xacro:include filename="$(find omnicore_description)/xacro/Gofa/gofa.urdf.xacro" />
 
     <!-- Import the Schunk gripper macro -->
-    <xacro:include filename="$(find schunk_description)/urdf/connection.xacro" />
     <xacro:include filename="$(find schunk_gazebo)/urdf/gazebo_complete.xacro" />
 
     <!-- World fixed joint -->

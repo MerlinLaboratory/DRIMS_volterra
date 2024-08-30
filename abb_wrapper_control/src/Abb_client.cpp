@@ -331,15 +331,15 @@ bool AbbClient::call_closing_gripper(bool close)
 
     // Calling the service for Schunk gripper
     schunk_interfaces::SimpleGrip simple_grip_srv;
-    simple_grip_srv.request.gripping_force = 100;
-    simple_grip_srv.request.gripping_direction = 1;
+    simple_grip_srv.request.gripping_force = 255;
+    simple_grip_srv.request.gripping_direction = 0;
 
     if (close && this->robot == "gofa" && !this->simple_grip_client.call(simple_grip_srv))
     {
         ROS_ERROR("Failed to contact the simple_grip server. Returning...");
         return false;
     }
-
+    ROS_INFO("Gripper closed");
     return true;
 }
 
@@ -357,7 +357,7 @@ bool AbbClient::call_opening_gripper(bool open)
     // Calling the service for Schunk gripper
     schunk_interfaces::JogTo jog_to_srv;
     jog_to_srv.request.position = 0.0;
-    jog_to_srv.request.velocity = 0.0;
+    jog_to_srv.request.velocity = 15.0;
     jog_to_srv.request.motion_type = 0;
 
     if (open && this->robot == "gofa" && !this->jog_to_client.call(jog_to_srv))
@@ -365,6 +365,8 @@ bool AbbClient::call_opening_gripper(bool open)
         ROS_ERROR("Failed to contact the jog_to server. Returning...");
         return false;
     }
+
+    ROS_INFO("Gripper opened");
 
     return true;
 }

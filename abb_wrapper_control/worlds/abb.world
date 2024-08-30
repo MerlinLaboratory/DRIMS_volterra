@@ -2,37 +2,10 @@
 <sdf version="1.7">
   <!-- One can change this world to his needs or use another one. -->
   
-  <world name="default">
-    <model name="TableBehind">
-			<pose> -0.45 0.0 0.95 0.0 0.0 0.0</pose>
-			<static>true</static>
-			<link name='linkTableBehind'>
-				<pose>0 0 0 0 0 0</pose>
-				
-				<collision name="my_collisionlinkTableBehind">
-		 			<pose>0 0 0 0 0 0</pose>
-					<geometry>
-		        <box>
-		          <size>0.02 1.0 0.65</size>
-		        </box>
-		      </geometry>
-	      </collision>
-				
-				<visual name="my_visuallinkTableBehind">
-					<geometry>
-		        <box>
-					<size>0.02 1.0 0.65</size>
-		        </box>
-		      </geometry>
-	      </visual>
-				
-				<self_collide>0</self_collide>		
-				<gravity>1</gravity>
-			</link>
-    </model>
-
+  <world name="summer_school_demo">
+    
 	<model name="TableRoof">
-			<pose> 0.0 0.0 1.3 0.0 0.0 0.0</pose>
+			<pose> 0.0 0.0 1.65 0.0 0.0 0.0</pose>
 			<static>true</static>
 			<link name='linkTableRoof'>
 				<pose>0 0 0 0 0 0</pose>
@@ -41,7 +14,7 @@
 		 			<pose>0 0 0 0 0 0</pose>
 					<geometry>
 		        <box>
-		          <size>1.0 1.0 0.02</size>
+		          <size>1.5 1.0 0.02</size>
 		        </box>
 		      </geometry>
 	      </collision>
@@ -49,7 +22,7 @@
 				<visual name="my_visualTableRoof">
 					<geometry>
 		        <box>
-					<size>1.0 1.0 0.02</size>
+					<size>1.5 1.0 0.02</size>
 		        </box>
 		      </geometry>
 	      </visual>
@@ -59,7 +32,7 @@
 		   </link>
     </model>
 
-	<model name="TableRight">  
+	<!-- <model name="TableRight">  
 			<pose>0.0 -0.50 0.95 0 0 0 </pose>
 			<static>true</static>
 			<link name='linkTableRight'>
@@ -113,7 +86,7 @@
 				<self_collide>0</self_collide>
 				<gravity>1</gravity>
 			</link>
-    </model>
+    </model> -->
 
 	
 </world>
