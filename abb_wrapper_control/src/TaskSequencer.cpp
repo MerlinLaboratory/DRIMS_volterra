@@ -75,7 +75,7 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     this->template_task_server = this->nh.advertiseService("/" + this->template_task_service_name, &TaskSequencer::call_template_task, this);
 
     // Initializing other control values
-    this->waiting_time = ros::Duration(20.0);
+    this->waiting_time = ros::Duration(30.0);
     this->null_joints.resize(this->number_of_active_joints.size());
     std::fill(this->null_joints.begin(), this->null_joints.end(), 0.0);
 
