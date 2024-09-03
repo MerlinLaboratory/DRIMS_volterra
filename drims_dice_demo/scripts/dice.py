@@ -64,7 +64,22 @@ class dice_ros:
         self.msg_dice = Int16()
         self.msg_pose = geometry_msgs.msg.PoseStamped()
         self.dice_R = np.eye(4)
-
+        
+        # Get the param from the ROS parameter server
+        if rospy.has_param('control_server_node/robot'):
+           self.string_var = rospy.get_param('control_server_node/robot')
+        else:
+           rospy.logerr("Could not find parameter '/control_server_node/robot' on the parameter server. Did you launch the ControlServer.launch before?")
+        
+        # Set the name of the left finger gripper accordingly to the robot name
+        if self.string_var == 'gofa':
+            self.left_finger_name = 'leftfinger_body'
+            self.robot_base_link = 'gofa_base_link'
+        elif self.string_var == 'yumi':
+            self.left_finger_name = 'gripper_finger_l'
+            self.robot_base_link = 'yumi_base_link'
+        else:
+            rospy.logerr("Could not set the name of the left finger gripper")
 
     def callback_dice(self,data):
         for i in range(len(data.name)):
@@ -100,8 +115,6 @@ class dice_ros:
 
                 self.mutex.release()
                 
-
-
 
     def fake_grasp(self):
         while not rospy.is_shutdown():
@@ -166,13 +179,13 @@ class dice_ros:
             #     continue
 
             try:
-                (trans_fing,rot_fing) = self.listener.lookupTransform('/dice', '/leftfinger_body', rospy.Time(0))
+                (trans_fing,rot_fing) = self.listener.lookupTransform('/dice', '/' + self.left_finger_name, rospy.Time(0))
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 continue
 
 
             try:
-                (trans_dice,rot_dice) = self.listener.lookupTransform('/gofa_base_link', '/dice', rospy.Time(0))
+                (trans_dice,rot_dice) = self.listener.lookupTransform('/' + self.robot_base_link, '/dice', rospy.Time(0))
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                 continue
 
@@ -180,7 +193,8 @@ class dice_ros:
             # eul = euler_from_quaternion([rot_dice[0],rot_dice[1],rot_dice[2],rot_dice[3]],axes="sxyz")
             
 
-            self.msg_pose.header.frame_id  = "gofa_base_link"
+            # self.msg_pose.header.frame_id  = "gofa_base_link"
+            self.msg_pose.header.frame_id  = self.robot_base_link
             self.msg_pose.header.stamp     = rospy.Time.now()
             self.msg_pose.pose.position.x    = trans_dice[0]
             self.msg_pose.pose.position.y    = trans_dice[1]
