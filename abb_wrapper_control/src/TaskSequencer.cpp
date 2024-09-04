@@ -70,6 +70,7 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     this->example_task_service_name = "example_task_service";
     this->template_task_service_name = "template_task_service";
     this->plan_and_execute_pose_name = "plan_and_execute_pose";
+    this->open_gripper_name = "open_gripper";
 
     // Advertising the services
     this->example_task_server = this->nh.advertiseService("/" + this->example_task_service_name, &TaskSequencer::call_example_task, this);
@@ -77,8 +78,8 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     
     // Advertising the 5 services for opening, closing, PlanAndExecutePose, PlanAndExecuteJoint, PlanandExecuteSlerp
     this->plan_and_execute_pose = this->nh.advertiseService("/" + this->plan_and_execute_pose_name, &TaskSequencer::call_plan_and_execute_pose, this);
-
-
+    this->open_gripper = this->nh.advertiseService("/" + this->open_gripper_name, &TaskSequencer::call_open_gripper, this);
+    
     // Initializing other control values
     this->waiting_time = ros::Duration(30.0);
     this->null_joints.resize(this->number_of_active_joints.size());
@@ -458,7 +459,6 @@ bool TaskSequencer::performIK(geometry_msgs::Pose pose_in, double timeout, std::
     return true;
 }
 
-
 bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execute_pose::Request &req,abb_wrapper_msgs::plan_and_execute_pose::Response &res){
     
     // Setting zero pose as starting from present
@@ -515,6 +515,20 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
         return false;
     }
     
-    res.success = true;
-    return res.success;
+    return res.success = true;
+}
+
+bool TaskSequencer::call_open_gripper(abb_wrapper_msgs::open_gripper::Request &req, abb_wrapper_msgs::open_gripper::Response &res){
+    
+    bool open = req.in_flag;
+
+    if (!this->abb_client.call_opening_gripper(open))
+    {
+        ROS_ERROR("Could not open the gripper.");
+        res.out_flag = false;
+        res.message = "The service call_opening_gripper was NOT performed correctly!";
+        return res.out_flag;
+    }
+
+    return res.out_flag = true;
 }

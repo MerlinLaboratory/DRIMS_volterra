@@ -63,6 +63,7 @@ add_service_files(
   arm_control.srv
   slerp_plan.srv
   plan_and_execute_pose.srv
+  open_gripper.srv
 )
 
 ## Generate actions in the 'action' folder
