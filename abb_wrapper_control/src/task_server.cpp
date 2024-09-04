@@ -11,7 +11,7 @@ ROS NODE MAIN TASK SEQUENCE SERVER
 **********************************************/
 int main(int argc, char **argv)
 {    
-    ros::init(argc, argv, "task_server_example");
+    ros::init(argc, argv, "task_server");
 
     ros::NodeHandle nh_;
 
@@ -24,27 +24,9 @@ int main(int argc, char **argv)
     // ROS Async spinner (necessary for processing callbacks inside the service callbacks)
     ros::AsyncSpinner spinner(2);
     spinner.start();
-   
-   // /* 1) HIGH LEVEL TASK*/
-   // //Create the request and response object
-      
-   // std_srvs::SetBool::Request req;
-   // req.data = true;
-   // std_srvs::SetBool::Response resp;
 
-   // ROS_INFO("Call Example Task");
-   
-   // bool success = task_sequencer_obj.call_example_task(req,resp); //This function is defined in "TaskSequencer.cpp"
-    
-   // // Check the success and use of the response
+    ros::waitForShutdown();
+    spinner.stop();
 
-   // if(success){
-   //    ROS_INFO_STREAM("Call Example Task completed correctly: " << resp.success);
-   // } else {
-   //    ROS_INFO_STREAM("Failed to completed the service");
-   // }
-   ros::waitForShutdown();
-   spinner.stop();
-
-   return 0;
+    return 0;
 }
