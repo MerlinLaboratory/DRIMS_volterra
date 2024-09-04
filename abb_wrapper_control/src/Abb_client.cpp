@@ -356,7 +356,7 @@ bool AbbClient::call_opening_gripper(bool open)
 
     // Calling the service for Schunk gripper
     schunk_interfaces::JogTo jog_to_srv;
-    jog_to_srv.request.position = 0.0;
+    jog_to_srv.request.position = 30.0;
     jog_to_srv.request.velocity = 15.0;
     jog_to_srv.request.motion_type = 0;
 

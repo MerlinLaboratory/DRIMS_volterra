@@ -45,6 +45,9 @@ class TaskSequencer {
 
         // Convert xyzrpy vector to geometry_msgs Pose
         geometry_msgs::Pose convert_vector_to_pose(std::vector<double> input_vec);
+        
+        // Callback for Plan and Execute Pose
+        bool call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execute_pose::Request &req,abb_wrapper_msgs::plan_and_execute_pose::Response &res);
 
         // Callback for example  task service
         bool call_example_task(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res);
@@ -85,10 +88,14 @@ class TaskSequencer {
         // Service names
         std::string example_task_service_name;
         std::string template_task_service_name;
+        //
+        std::string plan_and_execute_pose_name;
 
         // Service Servers
         ros::ServiceServer example_task_server;
         ros::ServiceServer template_task_server;
+        //
+        ros::ServiceServer plan_and_execute_pose;
 
         // Parsed task sequence variables
         std::vector<double> home_joints;

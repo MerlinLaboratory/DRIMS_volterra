@@ -102,10 +102,11 @@
       <arg name="rviz_config" value="$(find drims_dice_demo)/rviz/gofa.rviz" />
       <arg name="debug" value="$(arg debug)" />
     </include>
-      <!-- Collision Scene -->
-  <include file="$(find abb_wrapper_control)/launch/launchCollisionObject.launch" />
+
+    <!-- Collision Scene -->
+    <include file="$(find abb_wrapper_control)/launch/launchCollisionObject.launch">
+     <arg name="robot" value="$(arg robot)"/>
+    </include>
   </group>
-
-
 
 </launch>

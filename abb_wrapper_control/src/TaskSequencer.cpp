@@ -69,10 +69,15 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     // Setting the task service names
     this->example_task_service_name = "example_task_service";
     this->template_task_service_name = "template_task_service";
+    this->template_task_service_name = "plan_and_execute_pose";
 
     // Advertising the services
     this->example_task_server = this->nh.advertiseService("/" + this->example_task_service_name, &TaskSequencer::call_example_task, this);
     this->template_task_server = this->nh.advertiseService("/" + this->template_task_service_name, &TaskSequencer::call_template_task, this);
+    
+    // Advertising the 5 services for opening, closing, PlanAndExecutePose, PlanAndExecuteJoint, PlanandExecuteSlerp
+    this->plan_and_execute_pose = this->nh.advertiseService("/" + this->plan_and_execute_pose_name, &TaskSequencer::call_plan_and_execute_pose, this);
+
 
     // Initializing other control values
     this->waiting_time = ros::Duration(30.0);
@@ -451,4 +456,65 @@ bool TaskSequencer::performIK(geometry_msgs::Pose pose_in, double timeout, std::
     }
 
     return true;
+}
+
+
+bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execute_pose::Request &req,abb_wrapper_msgs::plan_and_execute_pose::Response &res){
+    
+    // Setting zero pose as starting from present
+
+    geometry_msgs::Pose present_pose = geometry_msgs::Pose();
+    present_pose.position.x = 0.0;
+    present_pose.position.y = 0.0;
+    present_pose.position.z = 0.0;
+    present_pose.orientation.x = 0.0;
+    present_pose.orientation.y = 0.0;
+    present_pose.orientation.z = 0.0;
+    present_pose.orientation.w = 1.0;
+
+    // Initialize Request
+    geometry_msgs::Pose pose;
+    pose.position.x = req.goal_pose.position.x;
+    pose.position.y = req.goal_pose.position.y;
+    pose.position.z = req.goal_pose.position.z;
+
+    pose.orientation.x = req.goal_pose.orientation.x;
+    pose.orientation.y = req.goal_pose.orientation.y;
+    pose.orientation.z = req.goal_pose.orientation.z;
+    pose.orientation.w = req.goal_pose.orientation.w;
+
+    bool is_relative = req.is_relative;
+
+    /* PLAN 1: Plan to POSE */
+
+    if (!this->abb_client.call_pose_service(pose, present_pose, is_relative, this->tmp_traj_arm, this->tmp_traj_arm))
+    {
+        ROS_ERROR("Could not plan to the specified pre grasp pose.");
+        res.success = false;
+        res.message = "The service call_pose_service was NOT performed correctly!";
+        return false;
+    }
+
+    /* EXEC 1: Going to POSE*/
+
+    if (!this->abb_client.call_arm_control_service(this->tmp_traj_arm))
+    {
+        ROS_ERROR("Could not go to PreGraspPose.");
+        res.success = false;
+        res.message = "The service call_arm_control_service was NOT performed correctly! Error in arm control.";
+        return false;
+    }
+
+    /* WAIT 1: Wait to finish the task*/
+
+    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    { // WAITING FOR END EXEC
+        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+        res.success = false;
+        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+        return false;
+    }
+    
+    res.success = true;
+    return res.success;
 }

@@ -1,0 +1,5 @@
+geometry_msgs/Pose goal_pose
+bool is_relative
+---
+bool success
+string message
