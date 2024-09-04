@@ -69,7 +69,7 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     // Setting the task service names
     this->example_task_service_name = "example_task_service";
     this->template_task_service_name = "template_task_service";
-    this->template_task_service_name = "plan_and_execute_pose";
+    this->plan_and_execute_pose_name = "plan_and_execute_pose";
 
     // Advertising the services
     this->example_task_server = this->nh.advertiseService("/" + this->example_task_service_name, &TaskSequencer::call_example_task, this);
