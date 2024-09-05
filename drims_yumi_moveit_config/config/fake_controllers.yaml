@@ -10,5 +10,7 @@ controller_list:
       - joint_6
       - joint_7
 initial:  # Define initial robot poses per group
-  - group: yumi_arm
-    pose: home
+#  - group: yumi_arm
+#    pose: home
+
+  []
