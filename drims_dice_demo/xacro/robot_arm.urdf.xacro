@@ -80,7 +80,7 @@
             prefix="$(arg prefix)"
             parent="flange"
             px="0.0" py="0.0" pz="0.011"
-            rx="${pi / 2.0}" ry="0.0" rz="0.0"
+            rx="${pi / 2.0}" ry="0.0" rz="${pi / 6.0}"
             hardware_interface="$(arg gripper_interface)" /> 
     </xacro:if>
 
