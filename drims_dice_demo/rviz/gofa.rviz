@@ -10,7 +10,9 @@ Panels:
         - /MotionPlanning1
         - /MotionPlanning1/Planning Request1
         - /MotionPlanning1/Planned Path1
+        - /TF1
         - /TF1/Frames1
+        - /Pose1
       Splitter Ratio: 0.5
     Tree Height: 145
   - Class: rviz/Selection
@@ -475,6 +477,8 @@ Visualization Manager:
           Value: false
         camera_holder:
           Value: false
+        dice:
+          Value: false
         ext_camera_link:
           Value: false
         finger1:
@@ -527,6 +531,8 @@ Visualization Manager:
                                   {}
               base_link_surface:
                 {}
+          dice:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
