@@ -290,7 +290,6 @@ bool TaskSequencer::PlanAndExecutePose(geometry_msgs::Pose &pose, bool is_relati
 
 bool TaskSequencer::PlanAndExecuteJoint(std::vector<double> &joint_goal)
 {
-
     std_srvs::SetBool set_bool_srv;
 
     /* PLAN 1: Plan to JOINT Position */

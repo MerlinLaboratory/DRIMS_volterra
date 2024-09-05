@@ -63,6 +63,7 @@ add_service_files(
   arm_control.srv
   slerp_plan.srv
   plan_and_execute_pose.srv
+  plan_and_execute_joint.srv
   open_gripper.srv
   close_gripper.srv
 )
