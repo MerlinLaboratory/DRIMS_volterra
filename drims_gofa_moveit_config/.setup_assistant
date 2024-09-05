@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: drims_dice_demo
+    relative_path: xacro/robot_arm.urdf.xacro
+    xacro_args: robot:=gofa
+  SRDF:
+    relative_path: config/robot.srdf
+  CONFIG:
+    author_name: Stefano Angeli
+    author_email: stefano.angeli@ing.unipi.it
+    generated_timestamp: 1724927608

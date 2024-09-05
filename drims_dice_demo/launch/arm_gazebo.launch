@@ -68,7 +68,7 @@
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers
   configured by default) -->
   <group if="$(eval arg('robot') == 'yumi')">
-    <include file="$(find yumi_single_arm_moveit_config)/launch/move_group.launch">
+    <include file="$(find drims_yumi_moveit_config)/launch/move_group.launch">
       <arg name="allow_trajectory_execution" value="true" />
       <arg name="moveit_controller_manager" value="ros_control" />
       <arg name="fake_execution_type" value="$(arg fake_execution_type)" />
@@ -79,7 +79,7 @@
     </include>
 
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
-    <include file="$(find yumi_single_arm_moveit_config)/launch/moveit_rviz.launch"
+    <include file="$(find drims_yumi_moveit_config)/launch/moveit_rviz.launch"
       if="$(arg use_rviz)">
       <arg name="rviz_config" value="$(find drims_dice_demo)/rviz/yumi.rviz" />
       <arg name="debug" value="$(arg debug)" />
@@ -87,7 +87,7 @@
   </group>
 
   <group if="$(eval arg('robot') == 'gofa')">
-    <include file="$(find gofa_moveit_config)/launch/move_group.launch">
+    <include file="$(find drims_gofa_moveit_config)/launch/move_group.launch">
       <arg name="allow_trajectory_execution" value="true" />
       <arg name="moveit_controller_manager" value="ros_control" />
       <arg name="fake_execution_type" value="$(arg fake_execution_type)" />
@@ -97,7 +97,7 @@
       <arg name="load_robot_description" value="$(arg load_robot_description)" />
     </include>
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
-    <include file="$(find gofa_moveit_config)/launch/moveit_rviz.launch"
+    <include file="$(find drims_gofa_moveit_config)/launch/moveit_rviz.launch"
       if="$(arg use_rviz)">
       <arg name="rviz_config" value="$(find drims_dice_demo)/rviz/gofa.rviz" />
       <arg name="debug" value="$(arg debug)" />
