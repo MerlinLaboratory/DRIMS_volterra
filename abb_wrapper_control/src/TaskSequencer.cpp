@@ -71,6 +71,7 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     this->template_task_service_name = "template_task_service";
     this->plan_and_execute_pose_name = "plan_and_execute_pose";
     this->open_gripper_name = "open_gripper";
+    this->close_gripper_name = "close_gripper";
 
     // Advertising the services
     this->example_task_server = this->nh.advertiseService("/" + this->example_task_service_name, &TaskSequencer::call_example_task, this);
@@ -79,7 +80,9 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     // Advertising the 5 services for opening, closing, PlanAndExecutePose, PlanAndExecuteJoint, PlanandExecuteSlerp
     this->plan_and_execute_pose = this->nh.advertiseService("/" + this->plan_and_execute_pose_name, &TaskSequencer::call_plan_and_execute_pose, this);
     this->open_gripper = this->nh.advertiseService("/" + this->open_gripper_name, &TaskSequencer::call_open_gripper, this);
-    
+    this->close_gripper = this->nh.advertiseService("/" + this->close_gripper_name, &TaskSequencer::call_close_gripper, this);
+
+
     // Initializing other control values
     this->waiting_time = ros::Duration(30.0);
     this->null_joints.resize(this->number_of_active_joints.size());
@@ -386,9 +389,7 @@ bool TaskSequencer::CloseGripper(bool close)
 
 bool TaskSequencer::OpenGripper(bool open)
 {
-
     std_srvs::SetBool set_bool_srv;
-
     if (!this->abb_client.call_opening_gripper(open))
     {
         ROS_ERROR("Could not open the gripper.");
@@ -527,6 +528,21 @@ bool TaskSequencer::call_open_gripper(abb_wrapper_msgs::open_gripper::Request &r
         ROS_ERROR("Could not open the gripper.");
         res.out_flag = false;
         res.message = "The service call_opening_gripper was NOT performed correctly!";
+        return res.out_flag;
+    }
+
+    return res.out_flag = true;
+}
+
+bool TaskSequencer::call_close_gripper(abb_wrapper_msgs::close_gripper::Request &req, abb_wrapper_msgs::close_gripper::Response &res){
+    
+    bool open = req.in_flag;
+
+    if (!this->abb_client.call_closing_gripper(open))
+    {
+        ROS_ERROR("Could not close the gripper.");
+        res.out_flag = false;
+        res.message = "The service call_closing_gripper was NOT performed correctly!";
         return res.out_flag;
     }
 

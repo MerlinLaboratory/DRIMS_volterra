@@ -46,6 +46,9 @@ class TaskSequencer {
         // Convert xyzrpy vector to geometry_msgs Pose
         geometry_msgs::Pose convert_vector_to_pose(std::vector<double> input_vec);
         
+        //
+        bool call_close_gripper(abb_wrapper_msgs::close_gripper::Request &req, abb_wrapper_msgs::close_gripper::Response &res);
+
         // Callback for OpenGripper
         bool call_open_gripper(abb_wrapper_msgs::open_gripper::Request &req, abb_wrapper_msgs::open_gripper::Response &res);
         
@@ -94,6 +97,7 @@ class TaskSequencer {
         //
         std::string plan_and_execute_pose_name;
         std::string open_gripper_name;
+        std::string close_gripper_name;
 
         // Service Servers
         ros::ServiceServer example_task_server;
@@ -101,6 +105,7 @@ class TaskSequencer {
         //
         ros::ServiceServer plan_and_execute_pose;
         ros::ServiceServer open_gripper;
+        ros::ServiceServer close_gripper;
 
         // Parsed task sequence variables
         std::vector<double> home_joints;

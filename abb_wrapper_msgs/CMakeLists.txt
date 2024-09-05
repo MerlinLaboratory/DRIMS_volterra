@@ -64,6 +64,7 @@ add_service_files(
   slerp_plan.srv
   plan_and_execute_pose.srv
   open_gripper.srv
+  close_gripper.srv
 )
 
 ## Generate actions in the 'action' folder

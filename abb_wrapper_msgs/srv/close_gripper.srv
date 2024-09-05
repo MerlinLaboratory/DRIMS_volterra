@@ -1,0 +1,4 @@
+bool in_flag
+---
+bool out_flag
+string message
