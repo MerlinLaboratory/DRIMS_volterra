@@ -20,6 +20,7 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefano.angeli@ing.uni
 #include "abb_wrapper_msgs/plan_and_execute_pose.h"
 #include "abb_wrapper_msgs/open_gripper.h"
 #include "abb_wrapper_msgs/close_gripper.h"
+#include "abb_wrapper_msgs/plan_and_execute_joint.h"
 
 // srv include for opening and closing the YuMi gripper
 #include "std_msgs/Bool.h"

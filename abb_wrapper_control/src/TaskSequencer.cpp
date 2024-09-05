@@ -72,6 +72,8 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     this->plan_and_execute_pose_name = "plan_and_execute_pose";
     this->open_gripper_name = "open_gripper";
     this->close_gripper_name = "close_gripper";
+    this->plan_and_execute_joint_name = "plan_and_execute_joint";
+
 
     // Advertising the services
     this->example_task_server = this->nh.advertiseService("/" + this->example_task_service_name, &TaskSequencer::call_example_task, this);
@@ -81,7 +83,7 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     this->plan_and_execute_pose = this->nh.advertiseService("/" + this->plan_and_execute_pose_name, &TaskSequencer::call_plan_and_execute_pose, this);
     this->open_gripper = this->nh.advertiseService("/" + this->open_gripper_name, &TaskSequencer::call_open_gripper, this);
     this->close_gripper = this->nh.advertiseService("/" + this->close_gripper_name, &TaskSequencer::call_close_gripper, this);
-
+    this->plan_and_execute_joint = this->nh.advertiseService("/" + this->plan_and_execute_joint_name, &TaskSequencer::call_plan_and_execute_joint, this);
 
     // Initializing other control values
     this->waiting_time = ros::Duration(30.0);
@@ -546,4 +548,42 @@ bool TaskSequencer::call_close_gripper(abb_wrapper_msgs::close_gripper::Request 
     }
 
     return res.out_flag = true;
+}
+
+bool TaskSequencer::call_plan_and_execute_joint(abb_wrapper_msgs::plan_and_execute_joint::Request &req, abb_wrapper_msgs::plan_and_execute_joint::Response &res){
+    
+    // Initialize the request
+    std::vector<double> joint_goal_pose = req.joint_goal; 
+
+    /* PLAN 1: Plan to JOINT Position */
+
+    if (!this->abb_client.call_joint_service(joint_goal_pose, true, this->tmp_traj_arm, this->tmp_traj_arm))
+    {
+        ROS_ERROR("Could not plan to the specified JOINT position.");
+        res.success = false;
+        res.message = "The service call_joint_service was NOT performed correctly!";
+        return false;
+    }
+
+    /* EXEC 1: Going to Joint*/
+
+    if (!this->abb_client.call_arm_control_service(this->tmp_traj_arm))
+    {
+        ROS_ERROR("Could not go to JOINT position.");
+        res.success = false;
+        res.message = "The service call_arm_control_service was NOT performed correctly! Error in arm control.";
+        return false;
+    }
+
+    /* WAIT 1: Wait to finish the task*/
+
+    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    { // WAITING FOR END EXEC
+        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+        res.success = false;
+        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+        return false;
+    }
+    
+    return res.success = true;
 }

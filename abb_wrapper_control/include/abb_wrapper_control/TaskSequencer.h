@@ -52,6 +52,10 @@ class TaskSequencer {
         // Callback for OpenGripper
         bool call_open_gripper(abb_wrapper_msgs::open_gripper::Request &req, abb_wrapper_msgs::open_gripper::Response &res);
         
+        // Callback for Plan and Execute Joint
+
+        bool call_plan_and_execute_joint(abb_wrapper_msgs::plan_and_execute_joint::Request &req, abb_wrapper_msgs::plan_and_execute_joint::Response &res);
+        
         // Callback for Plan and Execute Pose
         bool call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execute_pose::Request &req,abb_wrapper_msgs::plan_and_execute_pose::Response &res);
 
@@ -60,7 +64,7 @@ class TaskSequencer {
         
         // Callback for template task service
         bool call_template_task(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res);
-        
+
         // Function Plan and Execute Pose
 
         bool PlanAndExecutePose(geometry_msgs::Pose& pose, bool is_relative);
@@ -98,6 +102,7 @@ class TaskSequencer {
         std::string plan_and_execute_pose_name;
         std::string open_gripper_name;
         std::string close_gripper_name;
+        std::string plan_and_execute_joint_name;
 
         // Service Servers
         ros::ServiceServer example_task_server;
@@ -106,6 +111,7 @@ class TaskSequencer {
         ros::ServiceServer plan_and_execute_pose;
         ros::ServiceServer open_gripper;
         ros::ServiceServer close_gripper;
+        ros::ServiceServer plan_and_execute_joint;
 
         // Parsed task sequence variables
         std::vector<double> home_joints;
