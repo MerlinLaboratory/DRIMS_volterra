@@ -73,17 +73,18 @@ TaskSequencer::TaskSequencer(ros::NodeHandle &nh_)
     this->open_gripper_name = "open_gripper";
     this->close_gripper_name = "close_gripper";
     this->plan_and_execute_joint_name = "plan_and_execute_joint";
-
+    this->plan_and_execute_slerp_name = "plan_and_execute_slerp";
 
     // Advertising the services
     this->example_task_server = this->nh.advertiseService("/" + this->example_task_service_name, &TaskSequencer::call_example_task, this);
     this->template_task_server = this->nh.advertiseService("/" + this->template_task_service_name, &TaskSequencer::call_template_task, this);
-    
+
     // Advertising the 5 services for opening, closing, PlanAndExecutePose, PlanAndExecuteJoint, PlanandExecuteSlerp
     this->plan_and_execute_pose = this->nh.advertiseService("/" + this->plan_and_execute_pose_name, &TaskSequencer::call_plan_and_execute_pose, this);
     this->open_gripper = this->nh.advertiseService("/" + this->open_gripper_name, &TaskSequencer::call_open_gripper, this);
     this->close_gripper = this->nh.advertiseService("/" + this->close_gripper_name, &TaskSequencer::call_close_gripper, this);
     this->plan_and_execute_joint = this->nh.advertiseService("/" + this->plan_and_execute_joint_name, &TaskSequencer::call_plan_and_execute_joint, this);
+    this->plan_and_execute_slerp = this->nh.advertiseService("/" + this->plan_and_execute_slerp_name, &TaskSequencer::call_plan_and_execute_slerp, this);
 
     // Initializing other control values
     this->waiting_time = ros::Duration(30.0);
@@ -328,7 +329,6 @@ bool TaskSequencer::PlanAndExecuteJoint(std::vector<double> &joint_goal)
 
 bool TaskSequencer::PlanAndExecuteSlerp(geometry_msgs::Pose &pose, bool is_relative)
 {
-
     std_srvs::SetBool set_bool_srv;
 
     // Setting zero pose as starting from present
@@ -461,8 +461,9 @@ bool TaskSequencer::performIK(geometry_msgs::Pose pose_in, double timeout, std::
     return true;
 }
 
-bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execute_pose::Request &req,abb_wrapper_msgs::plan_and_execute_pose::Response &res){
-    
+bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execute_pose::Request &req, abb_wrapper_msgs::plan_and_execute_pose::Response &res)
+{
+
     // Setting zero pose as starting from present
 
     geometry_msgs::Pose present_pose = geometry_msgs::Pose();
@@ -516,12 +517,13 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
         res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
         return false;
     }
-    
+
     return res.success = true;
 }
 
-bool TaskSequencer::call_open_gripper(abb_wrapper_msgs::open_gripper::Request &req, abb_wrapper_msgs::open_gripper::Response &res){
-    
+bool TaskSequencer::call_open_gripper(abb_wrapper_msgs::open_gripper::Request &req, abb_wrapper_msgs::open_gripper::Response &res)
+{
+
     bool open = req.in_flag;
 
     if (!this->abb_client.call_opening_gripper(open))
@@ -535,8 +537,9 @@ bool TaskSequencer::call_open_gripper(abb_wrapper_msgs::open_gripper::Request &r
     return res.out_flag = true;
 }
 
-bool TaskSequencer::call_close_gripper(abb_wrapper_msgs::close_gripper::Request &req, abb_wrapper_msgs::close_gripper::Response &res){
-    
+bool TaskSequencer::call_close_gripper(abb_wrapper_msgs::close_gripper::Request &req, abb_wrapper_msgs::close_gripper::Response &res)
+{
+
     bool open = req.in_flag;
 
     if (!this->abb_client.call_closing_gripper(open))
@@ -550,10 +553,11 @@ bool TaskSequencer::call_close_gripper(abb_wrapper_msgs::close_gripper::Request 
     return res.out_flag = true;
 }
 
-bool TaskSequencer::call_plan_and_execute_joint(abb_wrapper_msgs::plan_and_execute_joint::Request &req, abb_wrapper_msgs::plan_and_execute_joint::Response &res){
-    
+bool TaskSequencer::call_plan_and_execute_joint(abb_wrapper_msgs::plan_and_execute_joint::Request &req, abb_wrapper_msgs::plan_and_execute_joint::Response &res)
+{
+
     // Initialize the request
-    std::vector<double> joint_goal_pose = req.joint_goal; 
+    std::vector<double> joint_goal_pose = req.joint_goal;
 
     /* PLAN 1: Plan to JOINT Position */
 
@@ -584,6 +588,65 @@ bool TaskSequencer::call_plan_and_execute_joint(abb_wrapper_msgs::plan_and_execu
         res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
         return false;
     }
-    
+
+    return res.success = true;
+}
+
+bool TaskSequencer::call_plan_and_execute_slerp(abb_wrapper_msgs::plan_and_execute_slerp::Request &req, abb_wrapper_msgs::plan_and_execute_slerp::Response &res)
+{
+
+    // Setting zero pose as starting from present
+
+    geometry_msgs::Pose present_pose = geometry_msgs::Pose();
+    present_pose.position.x = 0.0;
+    present_pose.position.y = 0.0;
+    present_pose.position.z = 0.0;
+    present_pose.orientation.x = 0.0;
+    present_pose.orientation.y = 0.0;
+    present_pose.orientation.z = 0.0;
+    present_pose.orientation.w = 1.0;
+
+    // Initialize Request
+    geometry_msgs::Pose pose;
+    pose.position.x = req.goal_pose.position.x;
+    pose.position.y = req.goal_pose.position.y;
+    pose.position.z = req.goal_pose.position.z;
+
+    pose.orientation.x = req.goal_pose.orientation.x;
+    pose.orientation.y = req.goal_pose.orientation.y;
+    pose.orientation.z = req.goal_pose.orientation.z;
+    pose.orientation.w = req.goal_pose.orientation.w;
+
+    bool is_relative = req.is_relative;
+
+    /* PLAN 1: Plan to POSE */
+
+    if (!this->abb_client.call_slerp_service(pose, present_pose, is_relative, this->tmp_traj_arm, this->tmp_traj_arm))
+    {
+        ROS_ERROR("Could not plan to the specified pose.");
+        res.success = false;
+        res.message = "The service call_slerp_service was NOT performed correctly!";
+        return false;
+    }
+
+    /* EXEC 1: Going to POSE*/
+
+    if (!this->abb_client.call_arm_control_service(this->tmp_traj_arm))
+    {
+        ROS_ERROR("Could not go to pose.");
+        res.success = false;
+        res.message = "The service call_arm_control_service was NOT performed correctly! Error in arm control.";
+        return false;
+    }
+
+    /* WAIT 1: Wait to finish the task*/
+
+    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    { // WAITING FOR END EXEC
+        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+        res.success = false;
+        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+        return false;
+    }
     return res.success = true;
 }

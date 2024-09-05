@@ -64,6 +64,7 @@ add_service_files(
   slerp_plan.srv
   plan_and_execute_pose.srv
   plan_and_execute_joint.srv
+  plan_and_execute_slerp.srv
   open_gripper.srv
   close_gripper.srv
 )
