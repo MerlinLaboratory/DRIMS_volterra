@@ -492,7 +492,7 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
 
     if (!this->abb_client.call_pose_service(pose, present_pose, is_relative, this->tmp_traj_arm, this->tmp_traj_arm))
     {
-        ROS_ERROR("Could not plan to the specified pre grasp pose.");
+        ROS_ERROR("Could not plan to the specified pose.");
         res.success = false;
         res.message = "The service call_pose_service was NOT performed correctly!";
         return false;
@@ -502,7 +502,7 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
 
     if (!this->abb_client.call_arm_control_service(this->tmp_traj_arm))
     {
-        ROS_ERROR("Could not go to PreGraspPose.");
+        ROS_ERROR("Could not go to pose.");
         res.success = false;
         res.message = "The service call_arm_control_service was NOT performed correctly! Error in arm control.";
         return false;
@@ -510,13 +510,13 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        res.success = false;
-        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     res.success = false;
+    //     res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
 
     return res.success = true;
 }
@@ -581,13 +581,13 @@ bool TaskSequencer::call_plan_and_execute_joint(abb_wrapper_msgs::plan_and_execu
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        res.success = false;
-        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     res.success = false;
+    //     res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
 
     return res.success = true;
 }
@@ -617,6 +617,7 @@ bool TaskSequencer::call_plan_and_execute_slerp(abb_wrapper_msgs::plan_and_execu
     pose.orientation.z = req.goal_pose.orientation.z;
     pose.orientation.w = req.goal_pose.orientation.w;
 
+
     bool is_relative = req.is_relative;
 
     /* PLAN 1: Plan to POSE */
@@ -641,12 +642,12 @@ bool TaskSequencer::call_plan_and_execute_slerp(abb_wrapper_msgs::plan_and_execu
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        res.success = false;
-        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     res.success = false;
+    //     res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
     return res.success = true;
 }
