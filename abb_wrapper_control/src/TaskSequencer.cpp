@@ -263,7 +263,7 @@ bool TaskSequencer::PlanAndExecutePose(geometry_msgs::Pose &pose, bool is_relati
 
     if (!this->abb_client.call_pose_service(pose, present_pose, is_relative, this->tmp_traj_arm, this->tmp_traj_arm))
     {
-        ROS_ERROR("Could not plan to the specified pre grasp pose.");
+        ROS_ERROR("Could not plan to the specified pose.");
         set_bool_srv.response.success = false;
         set_bool_srv.response.message = "The service call_pose_service was NOT performed correctly!";
         return false;
@@ -273,7 +273,7 @@ bool TaskSequencer::PlanAndExecutePose(geometry_msgs::Pose &pose, bool is_relati
 
     if (!this->abb_client.call_arm_control_service(this->tmp_traj_arm))
     {
-        ROS_ERROR("Could not go to PreGraspPose.");
+        ROS_ERROR("Could not go to pose.");
         set_bool_srv.response.success = false;
         set_bool_srv.response.message = "The service call_arm_control_service was NOT performed correctly! Error in arm control.";
         return false;

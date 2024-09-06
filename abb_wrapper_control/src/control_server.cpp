@@ -131,7 +131,7 @@ int main(int argc, char **argv)
     ros::ServiceServer pose_service = nh_.advertiseService("/" + pose_plan_service_name, &PosePlan::call_pose_plan, &pose_plan_obj);
     ros::ServiceServer slerp_service = nh_.advertiseService("/" + slerp_plan_service_name, &SlerpPlan::call_slerp_plan, &slerp_plan_obj);
     ros::ServiceServer arm_service = nh_.advertiseService("/" + arm_control_service_name, &ArmControl::call_arm_control, &arm_control_obj);
-    ros::ServiceServer arm_wait_service = nh_.advertiseService("/" + arm_wait_service_name, &ArmControl::call_arm_wait, &arm_control_obj);
+    // ros::ServiceServer arm_wait_service = nh_.advertiseService("/" + arm_wait_service_name, &ArmControl::call_arm_wait, &arm_control_obj);
     ros::ServiceServer joint_service = nh_.advertiseService("/" + joint_plan_service_name, &JointPlan::call_joint_plan, &joint_plan_obj);
 
     ROS_INFO("The main service server is running. Running as fast as possible!");

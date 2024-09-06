@@ -104,9 +104,9 @@ bool AbbClient::initialize(ros::NodeHandle &nh_, std::string robot)
         return false;
     this->arm_control_client = this->nh.serviceClient<abb_wrapper_msgs::arm_control>("/" + this->arm_control_service_name);
 
-    if (!ros::service::waitForService("/" + this->arm_wait_service_name, ros::Duration(1.0)))
-        return false;
-    this->arm_wait_client = this->nh.serviceClient<abb_wrapper_msgs::arm_wait>("/" + this->arm_wait_service_name);
+    // if (!ros::service::waitForService("/" + this->arm_wait_service_name, ros::Duration(1.0)))
+    //     return false;
+    // this->arm_wait_client = this->nh.serviceClient<abb_wrapper_msgs::arm_wait>("/" + this->arm_wait_service_name);
 
     if (!ros::service::waitForService("/" + this->pose_service_name, ros::Duration(1.0)))
         return false;
