@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
   <arg name="robot" default="gofa" doc="Which robot to load? [gofa, yumi]" />
   <arg name="paused" default="false" />
