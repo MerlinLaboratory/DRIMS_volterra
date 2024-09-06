@@ -510,13 +510,13 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        res.success = false;
-        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     res.success = false;
+    //     res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
 
     return res.success = true;
 }
@@ -581,13 +581,13 @@ bool TaskSequencer::call_plan_and_execute_joint(abb_wrapper_msgs::plan_and_execu
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        res.success = false;
-        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     res.success = false;
+    //     res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
 
     return res.success = true;
 }
@@ -641,12 +641,12 @@ bool TaskSequencer::call_plan_and_execute_slerp(abb_wrapper_msgs::plan_and_execu
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        res.success = false;
-        res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     res.success = false;
+    //     res.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
     return res.success = true;
 }
