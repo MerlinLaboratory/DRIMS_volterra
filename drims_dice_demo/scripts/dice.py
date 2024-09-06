@@ -30,8 +30,8 @@ urdf_file = path + '/xacro/Extra/dice.urdf'
 
 # print(urdf_file)
 
-rx = random.uniform( 0.0, 0.1)
-ry = random.uniform(-0.15, 0.15)
+rx = random.uniform(-0.05, 0.05)
+ry = random.uniform(0.15, 0.15)
 
 RA = random.uniform(-2.8, 2.8)
 RB = random.uniform(-2.8, 2.8)

@@ -45,19 +45,19 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
     </xacro:table>
 
-    <!-- Include camera stand -->
-    <xacro:camera_stand parent="base_link_table">
-        <origin xyz="0.0 0.4 0.65" rpy="0 0 0" />
-    </xacro:camera_stand>
-
-    <!-- Include surface -->
-    <xacro:surface parent="${robot}_base_link">
-        <origin xyz="-0.03 0.33 0.08" rpy="0 0 0" />
-    </xacro:surface>
-
     <!-- Choose between gofa and yumi_single_arm -->
 
     <xacro:if value="${robot == 'yumi'}">
+        <!-- Include camera stand -->
+        <xacro:camera_stand parent="base_link_table">
+            <origin xyz="0.0 0.4 0.65" rpy="0 0 0" />
+        </xacro:camera_stand>
+
+        <!-- Include surface -->
+        <xacro:surface parent="${robot}_base_link">
+            <origin xyz="-0.03 -0.33 0.08" rpy="0 0 0" />
+        </xacro:surface>
+
         <xacro:single_yumi parent="base_link_table" child="${robot}_base_link"
             hardware_interface="${hardware_interface}">
             <origin xyz="-0.3 0 0.6" rpy="0 0 -1.57" />
@@ -71,17 +71,28 @@
     </xacro:if>
 
     <xacro:if value="${robot == 'gofa'}">
+
+        <!-- Include surface -->
+        <xacro:surface parent="${robot}_base_link">
+            <origin xyz="-0.03 -0.50 0.1" rpy="0 0 0" />
+        </xacro:surface>
+
+        <!-- Include camera stand -->
+        <xacro:camera_stand parent="base_link_surface">
+            <origin xyz="0.325 0.0 0.0" rpy="0 0 ${-PI / 2.0}" />
+        </xacro:camera_stand>
+
         <xacro:gofa parent="base_link_table" child="${robot}_base_link"
             hardware_interface="${hardware_interface}">
-            <origin xyz="-0.3 0 0.627" rpy="0 0 -1.57" />
+            <origin xyz="-0.6 0 0.627" rpy="0 0 1.57" />
         </xacro:gofa>
 
         <xacro:egk_40_gazebo
             prefix="$(arg prefix)"
             parent="flange"
             px="0.0" py="0.0" pz="0.011"
-            rx="${pi / 2.0}" ry="0.0" rz="0.0"
-            hardware_interface="$(arg gripper_interface)" /> 
+            rx="${pi / 2.0}" ry="0.0" rz="${pi / 6.0}"
+            hardware_interface="$(arg gripper_interface)" />
     </xacro:if>
 
     <gazebo>
