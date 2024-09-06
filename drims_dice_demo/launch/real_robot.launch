@@ -36,6 +36,8 @@
             <arg name="load_robot_description" default="false"/>     <arg name="moveit_controller_manager" default="simple" />
             <arg name="use_rviz" default="false" />    
         </include>
+        <!-- Launching Schunk EGK 40 gripper  -->
+        <include file="$(find schunk_hardware_interface)/launch/gripper.launch">
     </group> 
 
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
