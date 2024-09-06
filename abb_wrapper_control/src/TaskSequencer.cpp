@@ -281,13 +281,13 @@ bool TaskSequencer::PlanAndExecutePose(geometry_msgs::Pose &pose, bool is_relati
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        set_bool_srv.response.success = false;
-        set_bool_srv.response.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     set_bool_srv.response.success = false;
+    //     set_bool_srv.response.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
     return set_bool_srv.response.success = true;
 }
 
@@ -317,13 +317,13 @@ bool TaskSequencer::PlanAndExecuteJoint(std::vector<double> &joint_goal)
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        set_bool_srv.response.success = false;
-        set_bool_srv.response.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     set_bool_srv.response.success = false;
+    //     set_bool_srv.response.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
     return set_bool_srv.response.success = true;
 }
 
@@ -364,13 +364,13 @@ bool TaskSequencer::PlanAndExecuteSlerp(geometry_msgs::Pose &pose, bool is_relat
 
     /* WAIT 1: Wait to finish the task*/
 
-    if (!this->abb_client.call_arm_wait_service(this->waiting_time))
-    { // WAITING FOR END EXEC
-        ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
-        set_bool_srv.response.success = false;
-        set_bool_srv.response.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
-        return false;
-    }
+    // if (!this->abb_client.call_arm_wait_service(this->waiting_time))
+    // { // WAITING FOR END EXEC
+    //     ROS_ERROR("TIMEOUT!!! EXEC TOOK TOO MUCH TIME for going to Pre Grasp Pose");
+    //     set_bool_srv.response.success = false;
+    //     set_bool_srv.response.message = "The service call_arm_wait_service was NOT performed correctly! Error wait in arm control.";
+    //     return false;
+    // }
     return set_bool_srv.response.success = true;
 }
 
