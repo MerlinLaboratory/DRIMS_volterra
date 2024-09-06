@@ -77,7 +77,12 @@ bool ArmControl::sendJointTrajectory(trajectory_msgs::JointTrajectory trajectory
 
     moveit_msgs::RobotTrajectory robot_trj_msg;
     robot_trj_msg.joint_trajectory = trajectory;
+    auto tic = ros::Time::now();
     auto res =  group.execute(robot_trj_msg);
+    auto toc = ros::Time::now();
+    auto trj_dur = robot_trj_msg.joint_trajectory.points.back().time_from_start;
+    double time_left = std::max(trj_dur - (toc-tic).toSec(),0.1);
+    ros::Duration(time_left).sleep();
 
     group.getMoveGroupClient().cancelAllGoals();
 
