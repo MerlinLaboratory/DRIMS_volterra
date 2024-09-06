@@ -37,7 +37,7 @@
             <arg name="use_rviz" default="false" />    
         </include>
         <!-- Launching Schunk EGK 40 gripper  -->
-        <include file="$(find schunk_hardware_interface)/launch/gripper.launch">
+        <include file="$(find schunk_hardware_interface)/launch/gripper.launch"/>
     </group> 
 
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
