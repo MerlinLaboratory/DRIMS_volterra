@@ -74,10 +74,14 @@ bool ArmControl::call_arm_control(abb_wrapper_msgs::arm_control::Request &req, a
 bool ArmControl::sendJointTrajectory(trajectory_msgs::JointTrajectory trajectory){
     
     moveit::planning_interface::MoveGroupInterface group(this->group_name);
+    group.getMoveGroupClient().cancelAllGoals();
 
     moveit_msgs::RobotTrajectory robot_trj_msg;
     robot_trj_msg.joint_trajectory = trajectory;
     auto res =  group.execute(robot_trj_msg);
+
+    group.getMoveGroupClient().cancelAllGoals();
+
     if (res==res.SUCCESS)
     {
       return true;
