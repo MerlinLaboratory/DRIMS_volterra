@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import socket
 import struct
 import threading
@@ -42,6 +42,7 @@ class UDPNode(Process):
         self.messageList = SimpleQueue()
         self._hostIP = hostIP
         # self._function_queue = q
+        print("UDP node initialized")
 
 
     def setMsgCallbackFunction(self, fun):
@@ -72,7 +73,7 @@ class UDPNode(Process):
                         try:
                             self.sock.sendto(msg,addr) # spedisco
                         except socket.error:
-                            print("msg" + str(msg) + " not sended")
+                            print("msg" + str(msg) + " not sendt")
                     
                 self.sock.close() # chiudo a fine while
                 print("Socket close")
@@ -151,7 +152,7 @@ def fun(md):
 def main(argv):
     print(argv[0])
     if (argv[0] == 'receiver'):
-        ser = UDPNode(8889, "127.0.0.1")
+        ser = UDPNode(8889, "192.168.125.50")
         # ser.setMsgCallbackFunction(printRender)
         ser.setMsgCallbackFunction(fun)
         input("parto?")

@@ -50,7 +50,7 @@ bool JointPlan::call_joint_plan(abb_wrapper_msgs::joint_plan::Request &req, abb_
     {
         ROS_ERROR("Could not perform motion planning in JointPlan object. Returning...");
         res.answer = false;
-        return false;
+        return true;
     }
 
     // At this point all is fine, return the computed trajectory
