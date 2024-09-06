@@ -1,0 +1,4 @@
+robot:
+  smart_gripper:
+    max_speed: 200
+    max_force: 120

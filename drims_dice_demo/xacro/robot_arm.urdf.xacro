@@ -47,9 +47,9 @@
 
     <!-- Choose between gofa and yumi_single_arm -->
 
-    <xacro:if value="${robot == 'yumi'}">
+    <xacro:if value="${robot == 'yumi_single_arm'}">
         <!-- Include surface -->
-        <xacro:surface parent="${robot}_base_link">
+        <xacro:surface parent="yumi_base_link">
             <origin xyz="-0.03 -0.40 0.1" rpy="0 0 0" />
         </xacro:surface>
 
@@ -58,7 +58,7 @@
             <origin xyz="0.325 0.0 0.0" rpy="0 0 ${-PI / 2.0}" />
         </xacro:camera_stand>
 
-        <xacro:single_yumi parent="base_link_table" child="${robot}_base_link"
+        <xacro:single_yumi parent="base_link_table" child="yumi_base_link"
             hardware_interface="${hardware_interface}">
             <origin xyz="-0.6 0 0.6" rpy="0 0 1.57" />
         </xacro:single_yumi>
