@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2024-09-05T19:07:57. -->
+<!-- Written by QtCreator 4.11.0, 2024-09-06T13:59:10. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -323,7 +323,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/marco/projects/merlin_ws/devel/.private/abb_wrapper_control/lib/abb_wrapper_control</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -473,7 +473,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/marco/projects/merlin_ws/devel/.private/abb_wrapper_control/lib/abb_wrapper_control</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.3">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -548,7 +548,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/marco/projects/merlin_ws/devel/.private/abb_wrapper_control/lib/abb_wrapper_control</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">4</value>
   </valuemap>

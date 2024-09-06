@@ -10,6 +10,7 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefano.angeli@ing.uni
 #include "abb_wrapper_control/ArmControl.h"
 
 #include <moveit_visual_tools/moveit_visual_tools.h>
+#include <moveit_msgs/RobotTrajectory.h>
 
 ArmControl::ArmControl(ros::NodeHandle& nh_,
     boost::shared_ptr<actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>> arm_client_ptr_){
@@ -21,6 +22,27 @@ ArmControl::ArmControl(ros::NodeHandle& nh_,
 
         // Initializing the arm client
         this->arm_client_ptr = arm_client_ptr_;
+
+        if (nh_.getParam("/control_server_node/robot", this->robot))
+        {
+            ROS_INFO("The arm you want to use is: %s", this->robot.c_str());
+        }
+        else
+        {
+            ROS_ERROR("Failed to get '/control_server_node/robot' parameter.");
+        }
+
+        // Set the move group name based on the robot
+        if(robot == "gofa"){
+            ROS_INFO("Set the group name for the gofa arm");
+            group_name = "gofa_arm";
+        }else if (robot == "yumi"){
+            ROS_INFO("Set the group name for the yumi arm");
+            group_name = "yumi_arm";
+        }else{
+            ROS_ERROR("Did you choose between gofa and yumi?");
+        }
+
 
         ROS_INFO("Finished creating ArmControl object");
 }
@@ -51,7 +73,20 @@ bool ArmControl::call_arm_control(abb_wrapper_msgs::arm_control::Request &req, a
 // Sends trajectory to the joint_traj controller
 bool ArmControl::sendJointTrajectory(trajectory_msgs::JointTrajectory trajectory){
     
-    // Waiting for the arm server to be ready
+    moveit::planning_interface::MoveGroupInterface group(this->group_name);
+
+    moveit_msgs::RobotTrajectory robot_trj_msg;
+    robot_trj_msg.joint_trajectory = trajectory;
+    auto res =  group.execute(robot_trj_msg);
+    if (res==res.SUCCESS)
+    {
+      return true;
+    }
+    return false;
+
+    /*
+
+  // Waiting for the arm server to be ready
     if(!this->arm_client_ptr->waitForServer(ros::Duration(1.0))){
         ROS_ERROR("The arm client is taking too much to get ready. Returning...");
         return false;
@@ -72,6 +107,7 @@ bool ArmControl::sendJointTrajectory(trajectory_msgs::JointTrajectory trajectory
     // Not waiting for result here as it would be blocking
 
     return true;
+    */
 }
 
 
