@@ -22,6 +22,9 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefanoangeli@ing.unip
 #define     VISUAL          // Publishes visual info on RViz
 // #define     PROMPT          // Waits for confermation in RViz before execution
 
+#include <moveit/move_group_interface/move_group_interface.h>
+
+
 class ArmControl {
 
     /// public variables and functions ------------------------------------------------------------
@@ -46,6 +49,9 @@ class ArmControl {
 
         // The arm action client
         boost::shared_ptr<actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>> arm_client_ptr;
+
+        std::string robot;
+        std::string group_name;
 
         // Joint trajectory computed to be sent to robot
         trajectory_msgs::JointTrajectory computed_trajectory;  

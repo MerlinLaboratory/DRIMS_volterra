@@ -41,6 +41,6 @@
     </group> 
 
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find drims_dice_demo)/config/config_$(arg robot).rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find drims_dice_demo)/rviz/$(arg robot).rviz"/>
 
 </launch>

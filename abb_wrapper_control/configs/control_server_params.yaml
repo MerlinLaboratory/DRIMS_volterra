@@ -24,9 +24,9 @@ abb:
 
 ####SCHUNK gripper ##########
 ## Closing gripper service name
- closing_gripper_gofa_service_name: simple_grip
+ closing_gripper_gofa_service_name: "schunk/egk_40/simple_grip"
 
 ## Opening gripper service name
- opening_gripper_gofa_service_name: jog_to
+ opening_gripper_gofa_service_name: "schunk/egk_40/jog_to"
 
 
