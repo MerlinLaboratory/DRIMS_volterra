@@ -10,8 +10,9 @@
   <arg name="load_gripper" default="true" />
   <arg name="collision_scene" default="true" />
   <arg name="pub_clock_frequency" default="500" />
-  
-  <!--launch GAZEBO with own world configuration -->
+
+  <!--launch
+  GAZEBO with own world configuration -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="debug" value="$(arg debug)" />
     <arg name="verbose" value="$(arg verbose)" />
@@ -46,7 +47,7 @@
     <arg name="controller_config_file"
       default="$(find drims_dice_demo)/config/gofa_controllers.yaml" />
     <arg name="controllers" default="joint_state_controller robot_controller gripper_controller" />
-    
+
     <!-- Load controller settings -->
     <rosparam file="$(arg controller_config_file)" command="load" />
     <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner"
@@ -85,6 +86,10 @@
       <arg name="rviz_config" value="$(find drims_dice_demo)/rviz/yumi.rviz" />
       <arg name="debug" value="$(arg debug)" />
     </include>
+    <!-- Collision Scene -->
+    <include file="$(find abb_wrapper_control)/launch/launchCollisionObject.launch">
+      <arg name="robot" value="$(arg robot)" />
+    </include>
   </group>
 
   <group if="$(eval arg('robot') == 'gofa')">
@@ -103,14 +108,10 @@
       <arg name="rviz_config" value="$(find drims_dice_demo)/rviz/gofa.rviz" />
       <arg name="debug" value="$(arg debug)" />
     </include>
-      <!-- Collision Scene -->
+    <!-- Collision Scene -->
     <include file="$(find abb_wrapper_control)/launch/launchCollisionObject.launch">
-     <arg name="robot" value="$(arg robot)"/>
+      <arg name="robot" value="$(arg robot)" />
     </include>
   </group>
-
-
-
-
 
 </launch>
