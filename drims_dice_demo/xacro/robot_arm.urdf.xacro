@@ -46,7 +46,7 @@
     </xacro:table>
 
     <!-- Choose between gofa and yumi_single_arm -->
-
+    <!-- For real yumi -->
     <xacro:if value="${robot == 'yumi_single_arm'}">
         <!-- Include surface -->
         <xacro:surface parent="yumi_base_link">
@@ -59,6 +59,30 @@
         </xacro:camera_stand>
 
         <xacro:single_yumi parent="base_link_table" child="yumi_base_link"
+            hardware_interface="${hardware_interface}">
+            <origin xyz="-0.6 0 0.6" rpy="0 0 1.57" />
+        </xacro:single_yumi>
+
+        <!-- Smart Gripper -->
+        <xacro:yumi_servo_gripper name="gripper" parent="link_7"
+            hardware_interface="${gripper_interface}">
+            <origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
+        </xacro:yumi_servo_gripper>
+    </xacro:if>
+
+    <!-- For fake yumi -->
+    <xacro:if value="${robot == 'yumi'}">
+        <!-- Include surface -->
+        <xacro:surface parent="{robot}_base_link">
+            <origin xyz="-0.03 -0.40 0.1" rpy="0 0 0" />
+        </xacro:surface>
+
+        <!-- Include camera stand -->
+        <xacro:camera_stand parent="base_link_surface">
+            <origin xyz="0.325 0.0 0.0" rpy="0 0 ${-PI / 2.0}" />
+        </xacro:camera_stand>
+
+        <xacro:single_yumi parent="base_link_table" child="{robot}_base_link"
             hardware_interface="${hardware_interface}">
             <origin xyz="-0.6 0 0.6" rpy="0 0 1.57" />
         </xacro:single_yumi>

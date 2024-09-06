@@ -35,7 +35,8 @@
         <include file="$(find drims_gofa_moveit_config)/launch/demo.launch">
             <arg name="pipeline" default="ompl" /> 
             <arg name="debug" default="false" />
-            <arg name="load_robot_description" default="false"/>     <arg name="moveit_controller_manager" default="simple" />
+            <arg name="load_robot_description" default="false"/>     
+            <arg name="moveit_controller_manager" default="simple" />
             <arg name="use_rviz" default="false" />    
         </include>
         <!-- Launching Schunk EGK 40 gripper  -->
