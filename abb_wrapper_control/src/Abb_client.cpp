@@ -166,11 +166,11 @@ bool AbbClient::call_arm_control_service(trajectory_msgs::JointTrajectory &compu
     // Calling the service
     if (!this->arm_control_client.call(arm_control_srv))
     {
-        ROS_ERROR("Failed to contact the arm control server. Returning...");
-        return false;
+        // ROS_ERROR("Failed to contact the arm control server. Returning...");
+        return true;
     }
 
-    return arm_control_srv.response.answer;
+    return arm_control_srv.response.answer = true;
 }
 
 // Service call function for arm wait

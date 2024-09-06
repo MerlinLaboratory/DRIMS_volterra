@@ -492,7 +492,7 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
 
     if (!this->abb_client.call_pose_service(pose, present_pose, is_relative, this->tmp_traj_arm, this->tmp_traj_arm))
     {
-        ROS_ERROR("Could not plan to the specified pre grasp pose.");
+        ROS_ERROR("Could not plan to the specified pose.");
         res.success = false;
         res.message = "The service call_pose_service was NOT performed correctly!";
         return false;
@@ -502,7 +502,7 @@ bool TaskSequencer::call_plan_and_execute_pose(abb_wrapper_msgs::plan_and_execut
 
     if (!this->abb_client.call_arm_control_service(this->tmp_traj_arm))
     {
-        ROS_ERROR("Could not go to PreGraspPose.");
+        ROS_ERROR("Could not go to pose.");
         res.success = false;
         res.message = "The service call_arm_control_service was NOT performed correctly! Error in arm control.";
         return false;
@@ -616,6 +616,7 @@ bool TaskSequencer::call_plan_and_execute_slerp(abb_wrapper_msgs::plan_and_execu
     pose.orientation.y = req.goal_pose.orientation.y;
     pose.orientation.z = req.goal_pose.orientation.z;
     pose.orientation.w = req.goal_pose.orientation.w;
+
 
     bool is_relative = req.is_relative;
 

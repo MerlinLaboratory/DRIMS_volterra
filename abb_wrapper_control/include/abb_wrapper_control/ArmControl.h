@@ -29,8 +29,7 @@ class ArmControl {
 
     /// public variables and functions ------------------------------------------------------------
 	public:
-		ArmControl(ros::NodeHandle& nh_,
-            boost::shared_ptr<actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>> arm_client_ptr_);
+		ArmControl(ros::NodeHandle& nh_);
 
         ~ArmControl();
     

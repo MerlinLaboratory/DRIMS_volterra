@@ -12,8 +12,7 @@ Email: gpollayil@gmail.com, mathewjosepollayil@gmail.com, stefano.angeli@ing.uni
 #include <moveit_visual_tools/moveit_visual_tools.h>
 #include <moveit_msgs/RobotTrajectory.h>
 
-ArmControl::ArmControl(ros::NodeHandle& nh_,
-    boost::shared_ptr<actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>> arm_client_ptr_){
+ArmControl::ArmControl(ros::NodeHandle& nh_){
         
         ROS_INFO("Starting to create ArmControl object");
 
@@ -21,7 +20,7 @@ ArmControl::ArmControl(ros::NodeHandle& nh_,
         this->nh = nh_;
 
         // Initializing the arm client
-        this->arm_client_ptr = arm_client_ptr_;
+        // this->arm_client_ptr = arm_client_ptr_;
 
         if (nh_.getParam("/control_server_node/robot", this->robot))
         {
@@ -60,11 +59,11 @@ bool ArmControl::call_arm_control(abb_wrapper_msgs::arm_control::Request &req, a
 
     // Sending the trajectory to hand
     if(!this->sendJointTrajectory(this->computed_trajectory)){
-        ROS_ERROR("Could not send computed trajectory from HandControl object. Returning...");
+        ROS_ERROR("Could not send computed trajectory. Returning...");
         res.answer = false;
         return false;
     }
-
+    
     // At this point all is fine, return true
     res.answer = true;
     return true;
@@ -83,13 +82,11 @@ bool ArmControl::sendJointTrajectory(trajectory_msgs::JointTrajectory trajectory
     group.getMoveGroupClient().cancelAllGoals();
 
     if (res==res.SUCCESS)
-    {
+    { 
       return true;
-    }else{
-        return false;
     }
-
-    ROS_WARN("Returning from sendJointTrajectory");
+    return false;
+    
     /*
 
   // Waiting for the arm server to be ready
