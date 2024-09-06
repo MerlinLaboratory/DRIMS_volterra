@@ -30,7 +30,7 @@ urdf_file = path + '/xacro/Extra/dice.urdf'
 
 # print(urdf_file)
 
-rx = random.uniform(-0.05, 0.05)
+
 ry = random.uniform(0.15, 0.15)
 
 RA = random.uniform(-2.8, 2.8)
@@ -38,11 +38,7 @@ RB = random.uniform(-2.8, 2.8)
 RC = random.uniform(-2.8, 2.8)
 
 
-cmd = "rosrun gazebo_ros spawn_model -urdf -file " + urdf_file + " -model dice -z 0.9 -x " + str(rx) + " -y " + str(ry) + " -R " + str(RA)  + " -P " + str(RB)  + " -Y " + str(RC) 
 
-print(cmd)
-
-os.system(cmd)
 
 class dice_ros:
 
@@ -80,6 +76,17 @@ class dice_ros:
             self.robot_base_link = 'yumi_base_link'
         else:
             rospy.logerr("Could not set the name of the left finger gripper")
+        
+        if self.string_var == 'gofa':
+           rx = random.uniform(-0.05, 0.05)
+        elif self.string_var == 'yumi':
+            rx = random.uniform(-0.2, -0.1)
+
+        cmd = "rosrun gazebo_ros spawn_model -urdf -file " + urdf_file + " -model dice -z 0.9 -x " + str(rx) + " -y " + str(ry) + " -R " + str(RA)  + " -P " + str(RB)  + " -Y " + str(RC) 
+
+        print(cmd)
+
+        os.system(cmd)
 
     def callback_dice(self,data):
         for i in range(len(data.name)):
