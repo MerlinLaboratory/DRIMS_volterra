@@ -60,6 +60,34 @@
 			</link>
 		</model>
 
+		<model name="TableRight">  
+			<pose>-0.1 -0.55 1.15 0 0 0 </pose>
+			<static>true</static>
+			<link name='linkTableRight'>
+				<pose>0 0 0 0 0 0</pose>
+
+				<collision name="my_collisionTableRight">
+		 			<pose>0 0 0 0 0 0</pose>
+					<geometry>
+		        <box>
+		          <size>1.2 0.02 0.85</size>
+		        </box>
+		            </geometry>
+	            </collision>
+
+				<visual name="my_visualTableRight">
+					<geometry>
+		        <box>
+					<size>1.2 0.02 0.85</size>
+		        </box>
+		           </geometry>
+	            </visual>
+
+				<self_collide>0</self_collide>
+				<gravity>1</gravity>
+			</link>
+        </model>
+
 		<!-- <model name="TableLeft">  
 			<pose>0.0 0.50 0.95 0 0 0 </pose>
 			<static>true</static>
