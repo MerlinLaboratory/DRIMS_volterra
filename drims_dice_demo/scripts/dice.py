@@ -31,13 +31,11 @@ urdf_file = path + '/xacro/Extra/dice.urdf'
 # print(urdf_file)
 
 
-ry = random.uniform(0.15, 0.15)
+ry = random.uniform(-0.15, 0.075)
 
 RA = random.uniform(-2.8, 2.8)
 RB = random.uniform(-2.8, 2.8)
 RC = random.uniform(-2.8, 2.8)
-
-
 
 
 class dice_ros:

@@ -19,7 +19,8 @@
     </include>
 
     <!-- Launching moveit pkg -->
-    <group if="$(eval arg('robot') == 'yumi_single_arm')">     
+    <group if="$(eval arg('robot') == 'yumi_single_arm')">  
+        <rosparam command="load" file="$(find drims_dice_demo)/config/yumi_real_gripper.yaml" />  
         <include file="$(find drims_yumi_moveit_config)/launch/demo.launch">
             <arg name="pipeline" default="ompl" /> 
             <arg name="debug" default="false" />         
@@ -27,6 +28,7 @@
             <arg name="moveit_controller_manager" default="simple" />
             <arg name="use_rviz" default="false" />    
         </include>
+        <node name="rws_services_node" pkg="rws_services" type="rws_services_node" output="screen"/>
     </group>
 
     <group if="$(eval arg('robot') == 'gofa')">         

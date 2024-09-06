@@ -85,9 +85,11 @@ bool ArmControl::sendJointTrajectory(trajectory_msgs::JointTrajectory trajectory
     if (res==res.SUCCESS)
     {
       return true;
+    }else{
+        return false;
     }
-    return false;
 
+    ROS_WARN("Returning from sendJointTrajectory");
     /*
 
   // Waiting for the arm server to be ready
