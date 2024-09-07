@@ -1,61 +1,19 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="robot" default="gofa" /> <!-- Possibilities: 'gofa' or 'yumi_single_arm'-->
+    <arg name="robot" default="gofa" /> <!-- Possibilities: 'gofa' or 'yumi'-->
     <arg name="simulation" default="false" /> <!-- Possibilities: 'true' or 'false'-->
     <arg name="controllers" default="VelocityControllers_JointTrajectoryController"
         doc="Controllers that are activated by default." />
     <arg name="stopped_controllers" default="VelocityControllers_JointGroupVelocityController"
         doc="Controllers that are initally loaded, but not started." />
 
-    <param name="robot_description"
-        command="$(find xacro)/xacro --inorder $(find drims_dice_demo)/xacro/robot_arm.urdf.xacro robot:=$(arg robot)" />
-
-    <!-- Launching ros-control pkg -->
-    <include file="$(find omnicore_ros_control)/launch/omnicore_control.launch">
-        <arg name="robot" value="$(arg robot)" /> <!-- Robot you want to launch -->
-        <arg name="simulation" value="$(arg simulation)" /> <!-- Whether using real or simulated
-        robot -->
-        <arg name="controllers" value="$(arg controllers)" />
-        <arg name="stopped_controllers" value="$(arg stopped_controllers)" />
-        <arg name="load_robot_description" value="false" />
+    <include file="$(find drims_dice_demo)/launch/real_robot.interal.launch">
+        <!-- <arg name="robot" value="$(arg robot)"/> -->
+        <arg name="robot" value="$(eval arg('robot')+'_single_arm' if arg('robot')=='yumi' else arg('robot'))"/>
+        <arg name="simulation" value="$(arg simulation)"/>
+        <arg name="controllers" value="$(arg controllers)"/>
+        <arg name="stopped_controllers" value="$(arg stopped_controllers)"/>
     </include>
-
-    <!-- Launching moveit pkg -->
-    <group if="$(eval arg('robot') == 'yumi_single_arm')">
-        <rosparam command="load" file="$(find drims_dice_demo)/config/yumi_real_gripper.yaml" />
-        <include file="$(find drims_yumi_moveit_config)/launch/demo.launch">
-            <arg name="pipeline" default="ompl" />
-            <arg name="debug" default="false" />
-            <arg name="load_robot_description" default="false" />
-            <arg name="moveit_controller_manager" default="simple" />
-            <arg name="use_rviz" default="false" />
-        </include>
-        <node name="rws_services_node" pkg="rws_services" type="rws_services_node" output="screen" />
-        <!-- Collision Scene -->
-        <include file="$(find abb_wrapper_control)/launch/launchCollisionObject.launch">
-            <arg name="robot" value="$(arg robot)" />
-        </include>
-    </group>
-
-    <group if="$(eval arg('robot') == 'gofa')">
-        <include file="$(find drims_gofa_moveit_config)/launch/demo.launch">
-            <arg name="pipeline" default="ompl" />
-            <arg name="debug" default="false" />
-            <arg name="load_robot_description" default="false" />
-            <arg name="moveit_controller_manager" default="simple" />
-            <arg name="use_rviz" default="false" />
-        </include>
-        <!-- Launching Schunk EGK 40 gripper  -->
-        <include file="$(find schunk_hardware_interface)/launch/gripper.launch" />
-        <!-- Collision Scene -->
-        <include file="$(find abb_wrapper_control)/launch/launchCollisionObject.launch">
-            <arg name="robot" value="$(arg robot)" />
-        </include>
-    </group>
-
-    <!-- Run Rviz and load the default config to see the state of the move_group node -->
-    <node name="rviz" pkg="rviz" type="rviz"
-        args="-d $(find drims_dice_demo)/rviz/$(arg robot).rviz" />
 
 </launch>
