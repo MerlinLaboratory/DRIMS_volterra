@@ -75,6 +75,8 @@ bool PosePlan::initialize(geometry_msgs::Pose goal_pose, geometry_msgs::Pose sta
         ros::Duration(1.0).sleep();
         return false;
     }
+    std::cout << "End effector name: " << this->end_effector_name << std::endl;
+
 
     tf::Transform ee_transform(this->stamp_ee_transform.getRotation(), this->stamp_ee_transform.getOrigin());
     tf::transformTFToEigen(ee_transform, this->end_effector_state);
@@ -107,6 +109,12 @@ bool PosePlan::initialize(geometry_msgs::Pose goal_pose, geometry_msgs::Pose sta
     {        
         this->goalPoseAff = this->end_effector_state.inverse()*this->goalPoseAff;
         is_goal_relative = true;
+
+        std::cout<<"Pose goal rel"<<std::endl;
+        std::cout<<"\n"<<this->goalPoseAff.matrix()<<std::endl;
+
+        std::cout<<"EE l"<<std::endl;
+        std::cout<<"\n"<<this->end_effector_state.matrix()<<std::endl;
     }
 
     // If the goal is relative, get the global goal pose by multiplying it with ee pose (end_effector_state)
