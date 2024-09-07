@@ -26,7 +26,7 @@ robot_controller:
     goal_time: 0.6
     stopped_velocity_tolerance: 0.05
     J1: {trajectory: 0.2, goal: 0.1}
-    J2: {trajectory: 0.2, goal: 0.1}
+    J2: {trajectory: 0.2, goal: 0.2}
     J3: {trajectory: 0.2, goal: 0.1}
     J4: {trajectory: 0.2, goal: 0.1}
     J5: {trajectory: 0.2, goal: 0.1}
@@ -43,6 +43,6 @@ gripper_controller:
     - finger2_joint
 
   finger1_joint: 
-    pid: {p: 1000.0, i: 10.0, d: 100.0}
+    pid: {p: 1200.0, i: 10.0, d: 100.0}
   finger2_joint: 
-    pid: {p: 1000.0, i: 10.0, d: 100.0}
+    pid: {p: 1200.0, i: 10.0, d: 100.0}

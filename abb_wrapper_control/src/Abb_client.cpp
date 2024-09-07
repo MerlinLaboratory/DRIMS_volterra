@@ -331,7 +331,7 @@ bool AbbClient::call_closing_gripper(bool close)
 
     // Calling the service for Schunk gripper
     schunk_interfaces::SimpleGrip simple_grip_srv;
-    simple_grip_srv.request.gripping_force = 50;
+    simple_grip_srv.request.gripping_force = 100;
     simple_grip_srv.request.gripping_direction = 0;
 
     if (close && this->robot == "gofa" && !this->simple_grip_client.call(simple_grip_srv))
