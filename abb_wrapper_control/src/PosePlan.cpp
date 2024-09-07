@@ -103,6 +103,12 @@ bool PosePlan::initialize(geometry_msgs::Pose goal_pose, geometry_msgs::Pose sta
     // Setting the goal pose
     tf::poseMsgToEigen(goal_pose, this->goalPoseAff);
 
+    if(!is_goal_relative) //workaround, !is_goal_relative is not working, we transform to is_relative (that works)
+    {        
+        this->goalPoseAff = this->end_effector_state.inverse()*this->goalPoseAff;
+        is_goal_relative = true;
+    }
+
     // If the goal is relative, get the global goal pose by multiplying it with ee pose (end_effector_state)
     if (is_goal_relative)
     {
