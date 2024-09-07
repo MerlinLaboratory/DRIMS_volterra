@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="robot_check" args="0.450 -0.637 0.070 0 3.14 0 gofa_base_link checker_board" />
+</launch>

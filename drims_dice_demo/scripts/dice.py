@@ -31,7 +31,7 @@ urdf_file = path + '/xacro/Extra/dice.urdf'
 # print(urdf_file)
 
 
-ry = random.uniform(-0.15, 0.075)
+
 
 RA = random.uniform(-2.8, 2.8)
 RB = random.uniform(-2.8, 2.8)
@@ -76,7 +76,8 @@ class dice_ros:
             rospy.logerr("Could not set the name of the left finger gripper")
         
         if self.string_var == 'gofa':
-           rx = random.uniform(-0.05, 0.05)
+           rx = random.uniform(0.0, 0.35)
+           ry = random.uniform(-0.12, 0.12)
         elif self.string_var == 'yumi':
             rx = random.uniform(-0.2, -0.1)
 
