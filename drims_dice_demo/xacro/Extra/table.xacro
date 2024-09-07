@@ -29,7 +29,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0.6"/>
                 <geometry>
-                    <mesh filename="package://drims_dice_demo/meshes/Extra/table.obj" scale="1.5 1 0.05"/>
+                    <mesh filename="package://drims_dice_demo/meshes/Extra/table.obj" scale="1.9 1.3 0.05"/>
                 </geometry>
                 <!-- <material name="Gazebo/Yellow"/> -->
             </visual>

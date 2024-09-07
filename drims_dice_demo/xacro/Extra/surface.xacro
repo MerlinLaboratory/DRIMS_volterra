@@ -5,8 +5,8 @@
 
     <xacro:macro name="surface" params="parent *origin">
 
-        <xacro:property name="base_height" value="0.6" />
-        <xacro:property name="base_width" value="0.4" />
+        <xacro:property name="base_height" value="0.75" />
+        <xacro:property name="base_width" value="0.52" />
 
 
         <joint name="joint_surface_robot" type="fixed">
@@ -28,13 +28,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <box size="${base_height} ${base_width} 0.1" />
+                    <box size="${base_height} ${base_width} 0.005" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <box size="${base_height} ${base_width} 0.1" />
+                    <box size="${base_height} ${base_width} 0.005" />
                 </geometry>
             </collision>
         </link>
