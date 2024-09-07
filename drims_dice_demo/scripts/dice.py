@@ -79,7 +79,8 @@ class dice_ros:
            rx = random.uniform(0.0, 0.35)
            ry = random.uniform(-0.12, 0.12)
         elif self.string_var == 'yumi':
-            rx = random.uniform(-0.2, -0.1)
+            rx = random.uniform(-0.25, 0.0)
+            ry = random.uniform(-0.25, -0.1)
 
         cmd = "rosrun gazebo_ros spawn_model -urdf -file " + urdf_file + " -model dice -z 0.9 -x " + str(rx) + " -y " + str(ry) + " -R " + str(RA)  + " -P " + str(RB)  + " -Y " + str(RC) 
 

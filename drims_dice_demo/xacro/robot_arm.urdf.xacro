@@ -79,7 +79,7 @@
 
         <!-- Include camera stand -->
         <xacro:camera_stand parent="base_link_surface">
-            <origin xyz="0.325 0.0 0.0" rpy="0 0 ${-PI / 2.0}" />
+            <origin xyz="0.425 0.0 0.0" rpy="0 0 ${-PI / 2.0}" />
         </xacro:camera_stand>
 
         <xacro:single_yumi parent="base_link_table" child="{robot}_base_link"
